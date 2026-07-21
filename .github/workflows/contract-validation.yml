@@ -1,0 +1,47 @@
+name: Contract validation
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contracts:
+    name: contracts / validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Check formatting
+        run: npm run format:check
+      - name: Lint documentation and OpenAPI
+        run: npm run lint
+      - name: Validate JSON Schemas
+        run: npm run validate:schemas
+      - name: Validate examples
+        run: npm run validate:examples
+      - name: Validate OpenAPI
+        run: npm run validate:openapi
+      - name: Validate AsyncAPI
+        run: npm run validate:asyncapi
+      - name: Validate references
+        run: npm run validate:refs
+      - name: Run tests
+        run: npm test
+      - name: Check obvious breaking changes
+        run: npm run check:breaking

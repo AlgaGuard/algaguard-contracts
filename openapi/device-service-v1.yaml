@@ -1,0 +1,202 @@
+openapi: 3.1.0
+info:
+  title: AlgaGuard Device Service API
+  version: 1.0.0
+  description: Device registry, claiming, tank association, and latest health/status metadata. No firmware implementation is included.
+servers:
+  - url: https://api.algaguard.example
+    description: Placeholder; the real portable API domain is TBD.
+security:
+  - bearerAuth: []
+tags:
+  - name: Devices
+    description: Organization-authorized device operations.
+paths:
+  /api/v1/devices:
+    get:
+      tags: [Devices]
+      operationId: listDevices
+      description: List devices visible to the authenticated organization member; requires device read permission.
+      parameters:
+        - $ref: './common-components-v1.yaml#/components/parameters/CorrelationId'
+        - $ref: './common-components-v1.yaml#/components/parameters/PageCursor'
+        - $ref: './common-components-v1.yaml#/components/parameters/PageLimit'
+      responses:
+        '200':
+          description: Paginated devices.
+          headers:
+            X-Correlation-ID:
+              $ref: './common-components-v1.yaml#/components/headers/CorrelationId'
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Device'
+                  page:
+                    $ref: './common-components-v1.yaml#/components/schemas/PageInfo'
+                required: [items, page]
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+  /api/v1/devices/{deviceId}:
+    parameters:
+      - $ref: '#/components/parameters/DeviceId'
+      - $ref: './common-components-v1.yaml#/components/parameters/CorrelationId'
+    get:
+      tags: [Devices]
+      operationId: getDevice
+      description: Read one visible device; requires device read permission.
+      responses:
+        '200':
+          description: Device registry record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+  /api/v1/devices/{deviceId}/claim:
+    parameters:
+      - $ref: '#/components/parameters/DeviceId'
+      - $ref: './common-components-v1.yaml#/components/parameters/CorrelationId'
+    post:
+      tags: [Devices]
+      operationId: claimDevice
+      description: Claim an unowned device using a separately delivered one-time token; requires organization device-claim permission.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                claimToken:
+                  type: string
+                  minLength: 32
+                  maxLength: 512
+              required: [claimToken]
+      responses:
+        '200':
+          description: Claimed device record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+  /api/v1/devices/{deviceId}/health:
+    parameters:
+      - $ref: '#/components/parameters/DeviceId'
+      - $ref: './common-components-v1.yaml#/components/parameters/CorrelationId'
+    get:
+      tags: [Devices]
+      operationId: getLatestDeviceHealth
+      description: Read the latest validated device-health snapshot; requires device telemetry-read permission.
+      responses:
+        '200':
+          description: Latest health payload and receive time.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  receivedAt:
+                    $ref: './common-components-v1.yaml#/components/schemas/UtcTimestamp'
+                  health:
+                    type: object
+                    description: Payload conforming to the MQTT device-health-v1 contract.
+                required: [receivedAt, health]
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+  /api/v1/devices/{deviceId}/status:
+    parameters:
+      - $ref: '#/components/parameters/DeviceId'
+      - $ref: './common-components-v1.yaml#/components/parameters/CorrelationId'
+    get:
+      tags: [Devices]
+      operationId: getLatestDeviceStatus
+      description: Read the latest validated retained lifecycle status; requires device read permission.
+      responses:
+        '200':
+          description: Latest device status.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  status:
+                    type: string
+                    enum: [ONLINE, OFFLINE, BOOTING, PROVISIONING, UPDATING, DEGRADED]
+                  statusAt:
+                    $ref: './common-components-v1.yaml#/components/schemas/UtcTimestamp'
+                required: [status, statusAt]
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+  /api/v1/devices/{deviceId}/tank-association:
+    parameters:
+      - $ref: '#/components/parameters/DeviceId'
+      - $ref: './common-components-v1.yaml#/components/parameters/CorrelationId'
+    put:
+      tags: [Devices]
+      operationId: associateDeviceWithTank
+      description: Associate a claimed device with one authorized tank; requires device administration permission and is audited.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                tankId:
+                  $ref: './common-components-v1.yaml#/components/schemas/Uuid'
+              required: [tankId]
+      responses:
+        '200':
+          description: Updated device record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+components:
+  securitySchemes:
+    bearerAuth:
+      $ref: './common-components-v1.yaml#/components/securitySchemes/bearerAuth'
+  parameters:
+    DeviceId:
+      name: deviceId
+      in: path
+      required: true
+      description: Bounded AlgaGuard device identifier.
+      schema:
+        $ref: './common-components-v1.yaml#/components/schemas/DeviceId'
+  schemas:
+    Device:
+      type: object
+      additionalProperties: false
+      properties:
+        deviceId:
+          $ref: './common-components-v1.yaml#/components/schemas/DeviceId'
+        organizationId:
+          $ref: './common-components-v1.yaml#/components/schemas/Uuid'
+        tankId:
+          type:
+            - string
+            - 'null'
+          format: uuid
+        hardwareModel:
+          type: string
+          maxLength: 64
+        firmwareVersion:
+          type: string
+          maxLength: 64
+      required: [deviceId, organizationId, tankId, hardwareModel, firmwareVersion]

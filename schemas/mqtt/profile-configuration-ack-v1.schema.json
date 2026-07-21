@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:mqtt:profile-configuration-ack:v1",
+  "title": "Profile configuration acknowledgement envelope v1",
+  "allOf": [
+    {
+      "$ref": "urn:algaguard:schema:common:event-envelope:v1"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "urn:algaguard:schema:mqtt:profile-configuration-ack:v1"
+        },
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "configurationId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "profileId": {
+              "$ref": "urn:algaguard:schema:common:profile-reference:v1#/$defs/profileId"
+            },
+            "profileVersion": {
+              "$ref": "urn:algaguard:schema:common:profile-reference:v1#/$defs/profileVersion"
+            },
+            "deviceId": {
+              "$ref": "urn:algaguard:schema:common:device-reference:v1#/$defs/deviceId"
+            },
+            "status": {
+              "type": "string",
+              "enum": ["APPLIED", "REJECTED", "DEFERRED", "ALREADY_APPLIED"]
+            },
+            "appliedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "validationErrors": {
+              "type": "array",
+              "items": {
+                "$ref": "urn:algaguard:schema:common:error-detail:v1"
+              },
+              "minItems": 1,
+              "maxItems": 32
+            },
+            "activeConfigurationHash": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "extensions": {
+              "$ref": "urn:algaguard:schema:common:extension-map:v1"
+            }
+          },
+          "required": ["configurationId", "profileId", "profileVersion", "deviceId", "status"],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "enum": ["APPLIED", "ALREADY_APPLIED"]
+                  }
+                },
+                "required": ["status"]
+              },
+              "then": {
+                "required": ["appliedAt", "activeConfigurationHash"]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "const": "REJECTED"
+                  }
+                },
+                "required": ["status"]
+              },
+              "then": {
+                "required": ["validationErrors"]
+              }
+            }
+          ]
+        }
+      },
+      "required": ["deviceId"]
+    }
+  ]
+}

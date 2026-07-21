@@ -1,0 +1,16 @@
+{
+  "schema": "urn:algaguard:schema:mqtt:telemetry-ack:v1",
+  "schemaVersion": "1.0.0",
+  "messageId": "30d4cd7c-b2d6-440e-8d37-cde291977d01",
+  "deviceId": "AG-000001",
+  "sentAt": "2026-07-22T10:00:11Z",
+  "correlationId": "2c99b5de-cf0f-4a20-8a94-78f029b69b01",
+  "payload": {
+    "ackId": "36d6b708-5836-4412-ae29-2a4bfc3b0e01",
+    "batchId": "a1a5e0b8-b967-4aa3-8ce8-64c419932101",
+    "status": "ACCEPTED",
+    "acceptedThroughSequence": "1010",
+    "receivedAt": "2026-07-22T10:00:11Z",
+    "duplicate": false
+  }
+}

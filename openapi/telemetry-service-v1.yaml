@@ -1,0 +1,165 @@
+openapi: 3.1.0
+info:
+  title: AlgaGuard Telemetry Service API
+  version: 1.0.0
+  description: Latest, historical, and aggregate telemetry queries. The internal MQTT ingestion transaction is not a public endpoint.
+servers:
+  - url: https://api.algaguard.example
+    description: Placeholder; the real portable API domain is TBD.
+security:
+  - bearerAuth: []
+tags:
+  - name: Telemetry
+    description: Authorized device telemetry queries.
+paths:
+  /api/v1/devices/{deviceId}/telemetry/latest:
+    parameters:
+      - $ref: '#/components/parameters/DeviceId'
+      - $ref: './common-components-v1.yaml#/components/parameters/CorrelationId'
+    get:
+      tags: [Telemetry]
+      operationId: getLatestTelemetry
+      description: Read the newest durable sample for a visible device; requires telemetry read permission.
+      responses:
+        '200':
+          description: Latest telemetry sample with immutable profile reference and time quality.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TelemetryRecord'
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+  /api/v1/devices/{deviceId}/telemetry:
+    parameters:
+      - $ref: '#/components/parameters/DeviceId'
+      - $ref: './common-components-v1.yaml#/components/parameters/CorrelationId'
+    get:
+      tags: [Telemetry]
+      operationId: listTelemetry
+      description: Read bounded historical telemetry for a visible device; requires telemetry read permission and a UTC time range.
+      parameters:
+        - $ref: './common-components-v1.yaml#/components/parameters/FromTime'
+        - $ref: './common-components-v1.yaml#/components/parameters/ToTime'
+        - $ref: './common-components-v1.yaml#/components/parameters/PageCursor'
+        - $ref: './common-components-v1.yaml#/components/parameters/PageLimit'
+      responses:
+        '200':
+          description: Paginated historical telemetry.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TelemetryRecord'
+                  page:
+                    $ref: './common-components-v1.yaml#/components/schemas/PageInfo'
+                required: [items, page]
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+  /api/v1/devices/{deviceId}/telemetry/aggregates:
+    parameters:
+      - $ref: '#/components/parameters/DeviceId'
+      - $ref: './common-components-v1.yaml#/components/parameters/CorrelationId'
+    get:
+      tags: [Telemetry]
+      operationId: listTelemetryAggregates
+      description: Read bounded server-calculated aggregates; requires telemetry read permission and never substitutes aggregate time for source time quality.
+      parameters:
+        - $ref: './common-components-v1.yaml#/components/parameters/FromTime'
+        - $ref: './common-components-v1.yaml#/components/parameters/ToTime'
+        - name: interval
+          in: query
+          required: true
+          description: Approved aggregation interval.
+          schema:
+            type: string
+            enum: [ONE_MINUTE, FIVE_MINUTES, ONE_HOUR, ONE_DAY]
+        - $ref: './common-components-v1.yaml#/components/parameters/PageCursor'
+        - $ref: './common-components-v1.yaml#/components/parameters/PageLimit'
+      responses:
+        '200':
+          description: Paginated aggregate buckets.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AggregateBucket'
+                  page:
+                    $ref: './common-components-v1.yaml#/components/schemas/PageInfo'
+                required: [items, page]
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+components:
+  securitySchemes:
+    bearerAuth:
+      $ref: './common-components-v1.yaml#/components/securitySchemes/bearerAuth'
+  parameters:
+    DeviceId:
+      name: deviceId
+      in: path
+      required: true
+      description: AlgaGuard device ID.
+      schema:
+        $ref: './common-components-v1.yaml#/components/schemas/DeviceId'
+  schemas:
+    TelemetryRecord:
+      type: object
+      additionalProperties: false
+      properties:
+        deviceId:
+          $ref: './common-components-v1.yaml#/components/schemas/DeviceId'
+        sequence:
+          type: string
+          pattern: '^(0|[1-9][0-9]{0,19})$'
+        observedAt:
+          type:
+            - string
+            - 'null'
+          format: date-time
+        timestampQuality:
+          type: string
+          enum: [NTP_SYNCED, RTC_HOLDOVER, UNSYNCED]
+        values:
+          type: object
+        profileId:
+          $ref: './common-components-v1.yaml#/components/schemas/Uuid'
+        profileVersion:
+          type: string
+          maxLength: 64
+        simulation:
+          type: boolean
+      required:
+        [
+          deviceId,
+          sequence,
+          observedAt,
+          timestampQuality,
+          values,
+          profileId,
+          profileVersion,
+          simulation,
+        ]
+    AggregateBucket:
+      type: object
+      additionalProperties: false
+      properties:
+        startsAt:
+          $ref: './common-components-v1.yaml#/components/schemas/UtcTimestamp'
+        endsAt:
+          $ref: './common-components-v1.yaml#/components/schemas/UtcTimestamp'
+        sampleCount:
+          type: integer
+          minimum: 1
+        aggregates:
+          type: object
+          description: Named min, max, mean, and count values using canonical parameter names and units.
+      required: [startsAt, endsAt, sampleCount, aggregates]

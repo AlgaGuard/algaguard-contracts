@@ -1,0 +1,21 @@
+{
+  "schema": "urn:algaguard:schema:mqtt:ota-notification:v1",
+  "schemaVersion": "1.0.0",
+  "messageId": "00ac435b-ed81-45de-b16e-df4e19151c02",
+  "deviceId": "AG-000001",
+  "sentAt": "2026-07-22T11:00:00Z",
+  "payload": {
+    "releaseId": "44444444-4444-4444-8444-444444444444",
+    "version": "0.1.0-contract-demo",
+    "hardwareModel": "ESP32-S3-DEVKITC-1-N16R8",
+    "downloadUrl": "https://downloads.algaguard.example/firmware/demo.bin",
+    "sizeBytes": 1048576,
+    "sha256": "NOT-A-VALID-SHA256",
+    "signature": "QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQQ==",
+    "signatureAlgorithm": "ED25519",
+    "publishedAt": "2026-07-22T10:55:00Z",
+    "expiresAt": "2026-07-29T10:55:00Z",
+    "rolloutRing": "DEVELOPMENT",
+    "mandatory": false
+  }
+}

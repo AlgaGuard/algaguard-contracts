@@ -1,0 +1,363 @@
+asyncapi: 3.1.0
+info:
+  title: AlgaGuard Device MQTT API
+  version: 1.0.0
+  description: >-
+    Device-perspective MQTT/TLS contract for the EMQX pilot path. The host is a placeholder and the real domain is TBD.
+servers:
+  production:
+    host: mqtt.algaguard.example
+    protocol: mqtts
+    description: Placeholder MQTT/TLS host; the real portable domain is TBD.
+    security:
+      - $ref: '#/components/securitySchemes/deviceCertificate'
+      - $ref: '#/components/securitySchemes/deviceCredentials'
+channels:
+  telemetry:
+    address: algaguard/v1/devices/{deviceId}/telemetry
+    description: Device publishes bounded telemetry batches.
+    parameters:
+      deviceId:
+        $ref: '#/components/parameters/deviceId'
+    messages:
+      telemetryBatch:
+        $ref: '#/components/messages/telemetryBatch'
+  telemetryAck:
+    address: algaguard/v1/devices/{deviceId}/telemetry/ack
+    description: Device receives the durable application acknowledgement.
+    parameters:
+      deviceId:
+        $ref: '#/components/parameters/deviceId'
+    messages:
+      telemetryAck:
+        $ref: '#/components/messages/telemetryAck'
+  health:
+    address: algaguard/v1/devices/{deviceId}/health
+    description: Device publishes current diagnostics.
+    parameters:
+      deviceId:
+        $ref: '#/components/parameters/deviceId'
+    messages:
+      deviceHealth:
+        $ref: '#/components/messages/deviceHealth'
+  status:
+    address: algaguard/v1/devices/{deviceId}/status
+    description: Device publishes retained lifecycle state and configures retained OFFLINE Last Will.
+    parameters:
+      deviceId:
+        $ref: '#/components/parameters/deviceId'
+    messages:
+      deviceStatus:
+        $ref: '#/components/messages/deviceStatus'
+  commands:
+    address: algaguard/v1/devices/{deviceId}/commands
+    description: Device receives authorized expiring commands.
+    parameters:
+      deviceId:
+        $ref: '#/components/parameters/deviceId'
+    messages:
+      command:
+        $ref: '#/components/messages/command'
+  commandResults:
+    address: algaguard/v1/devices/{deviceId}/command-results
+    description: Device publishes command lifecycle results.
+    parameters:
+      deviceId:
+        $ref: '#/components/parameters/deviceId'
+    messages:
+      commandResult:
+        $ref: '#/components/messages/commandResult'
+  configuration:
+    address: algaguard/v1/devices/{deviceId}/configuration
+    description: Device receives the retained latest desired immutable profile configuration.
+    parameters:
+      deviceId:
+        $ref: '#/components/parameters/deviceId'
+    messages:
+      profileConfiguration:
+        $ref: '#/components/messages/profileConfiguration'
+  configurationAck:
+    address: algaguard/v1/devices/{deviceId}/configuration/ack
+    description: Device publishes its profile-configuration application result.
+    parameters:
+      deviceId:
+        $ref: '#/components/parameters/deviceId'
+    messages:
+      profileConfigurationAck:
+        $ref: '#/components/messages/profileConfigurationAck'
+  ota:
+    address: algaguard/v1/devices/{deviceId}/ota
+    description: Device receives a signed, expiring, non-retained release notification.
+    parameters:
+      deviceId:
+        $ref: '#/components/parameters/deviceId'
+    messages:
+      otaNotification:
+        $ref: '#/components/messages/otaNotification'
+  otaStatus:
+    address: algaguard/v1/devices/{deviceId}/ota/status
+    description: Device publishes OTA download, verification, installation, and rollback state.
+    parameters:
+      deviceId:
+        $ref: '#/components/parameters/deviceId'
+    messages:
+      otaStatus:
+        $ref: '#/components/messages/otaStatus'
+operations:
+  telemetry:
+    action: send
+    summary: Publish telemetry batch
+    description: Device sends a QoS 1 non-retained telemetry batch.
+    channel:
+      $ref: '#/channels/telemetry'
+    messages:
+      - $ref: '#/channels/telemetry/messages/telemetryBatch'
+    bindings:
+      mqtt:
+        qos: 1
+        retain: false
+        bindingVersion: 0.2.0
+  telemetryAck:
+    action: receive
+    summary: Receive telemetry application acknowledgement
+    description: Device receives a QoS 1 non-retained durable application acknowledgement.
+    channel:
+      $ref: '#/channels/telemetryAck'
+    messages:
+      - $ref: '#/channels/telemetryAck/messages/telemetryAck'
+    bindings:
+      mqtt:
+        qos: 1
+        retain: false
+        bindingVersion: 0.2.0
+  health:
+    action: send
+    summary: Publish device health
+    description: Device sends QoS 1 non-retained diagnostic health.
+    channel:
+      $ref: '#/channels/health'
+    messages:
+      - $ref: '#/channels/health/messages/deviceHealth'
+    bindings:
+      mqtt:
+        qos: 1
+        retain: false
+        bindingVersion: 0.2.0
+  status:
+    action: send
+    summary: Publish retained device status
+    description: Device sends retained QoS 1 state; OFFLINE is also configured as its retained Last Will.
+    channel:
+      $ref: '#/channels/status'
+    messages:
+      - $ref: '#/channels/status/messages/deviceStatus'
+    bindings:
+      mqtt:
+        qos: 1
+        retain: true
+        bindingVersion: 0.2.0
+  commands:
+    action: receive
+    summary: Receive device command
+    description: Device receives a QoS 1 non-retained authorized command.
+    channel:
+      $ref: '#/channels/commands'
+    messages:
+      - $ref: '#/channels/commands/messages/command'
+    bindings:
+      mqtt:
+        qos: 1
+        retain: false
+        bindingVersion: 0.2.0
+  commandResults:
+    action: send
+    summary: Publish command result
+    description: Device sends a QoS 1 non-retained command lifecycle result.
+    channel:
+      $ref: '#/channels/commandResults'
+    messages:
+      - $ref: '#/channels/commandResults/messages/commandResult'
+    bindings:
+      mqtt:
+        qos: 1
+        retain: false
+        bindingVersion: 0.2.0
+  configuration:
+    action: receive
+    summary: Receive retained profile configuration
+    description: Device receives the latest retained QoS 1 desired configuration.
+    channel:
+      $ref: '#/channels/configuration'
+    messages:
+      - $ref: '#/channels/configuration/messages/profileConfiguration'
+    bindings:
+      mqtt:
+        qos: 1
+        retain: true
+        bindingVersion: 0.2.0
+  configurationAck:
+    action: send
+    summary: Publish profile configuration acknowledgement
+    description: Device sends a QoS 1 non-retained configuration application result.
+    channel:
+      $ref: '#/channels/configurationAck'
+    messages:
+      - $ref: '#/channels/configurationAck/messages/profileConfigurationAck'
+    bindings:
+      mqtt:
+        qos: 1
+        retain: false
+        bindingVersion: 0.2.0
+  ota:
+    action: receive
+    summary: Receive OTA notification
+    description: Device receives a QoS 1 non-retained signed and expiring release notification.
+    channel:
+      $ref: '#/channels/ota'
+    messages:
+      - $ref: '#/channels/ota/messages/otaNotification'
+    bindings:
+      mqtt:
+        qos: 1
+        retain: false
+        bindingVersion: 0.2.0
+  otaStatus:
+    action: send
+    summary: Publish OTA status
+    description: Device sends QoS 1 non-retained OTA progress and terminal state.
+    channel:
+      $ref: '#/channels/otaStatus'
+    messages:
+      - $ref: '#/channels/otaStatus/messages/otaStatus'
+    bindings:
+      mqtt:
+        qos: 1
+        retain: false
+        bindingVersion: 0.2.0
+components:
+  securitySchemes:
+    deviceCertificate:
+      type: X509
+      description: Preferred per-device client certificate identity over TLS.
+    deviceCredentials:
+      type: userPassword
+      description: Separately provisioned per-device credentials when certificates are not yet available.
+  parameters:
+    deviceId:
+      description: Bounded AlgaGuard device identifier matching AG-000001.
+      location: $message.payload#/deviceId
+  messages:
+    telemetryBatch:
+      name: telemetryBatchV1
+      title: Telemetry batch v1
+      contentType: application/json
+      payload:
+        $ref: '../schemas/mqtt/telemetry-batch-v1.schema.json'
+      examples:
+        - name: validatedTelemetryBatch
+          summary: Complete simulation-only example in examples/valid/telemetry-batch-v1.json.
+          payload:
+            $ref: '../examples/valid/telemetry-batch-v1.json'
+    telemetryAck:
+      name: telemetryAckV1
+      title: Telemetry acknowledgement v1
+      contentType: application/json
+      payload:
+        $ref: '../schemas/mqtt/telemetry-ack-v1.schema.json'
+      examples:
+        - name: validatedTelemetryAck
+          summary: Complete example in examples/valid/telemetry-ack-v1.json.
+          payload:
+            $ref: '../examples/valid/telemetry-ack-v1.json'
+    deviceHealth:
+      name: deviceHealthV1
+      title: Device health v1
+      contentType: application/json
+      payload:
+        $ref: '../schemas/mqtt/device-health-v1.schema.json'
+      examples:
+        - name: validatedDeviceHealth
+          summary: Complete example in examples/valid/device-health-v1.json.
+          payload:
+            $ref: '../examples/valid/device-health-v1.json'
+    deviceStatus:
+      name: deviceStatusV1
+      title: Device status v1
+      contentType: application/json
+      payload:
+        $ref: '../schemas/mqtt/device-status-v1.schema.json'
+      examples:
+        - name: validatedOnlineStatus
+          summary: Complete ONLINE example in examples/valid/device-status-online-v1.json.
+          payload:
+            $ref: '../examples/valid/device-status-online-v1.json'
+        - name: validatedOfflineStatus
+          summary: Complete OFFLINE Last Will example in examples/valid/device-status-offline-v1.json.
+          payload:
+            $ref: '../examples/valid/device-status-offline-v1.json'
+    command:
+      name: commandV1
+      title: Command v1
+      contentType: application/json
+      payload:
+        $ref: '../schemas/mqtt/command-v1.schema.json'
+      examples:
+        - name: validatedCommand
+          summary: Complete example in examples/valid/command-v1.json.
+          payload:
+            $ref: '../examples/valid/command-v1.json'
+    commandResult:
+      name: commandResultV1
+      title: Command result v1
+      contentType: application/json
+      payload:
+        $ref: '../schemas/mqtt/command-result-v1.schema.json'
+      examples:
+        - name: validatedCommandResult
+          summary: Complete example in examples/valid/command-result-v1.json.
+          payload:
+            $ref: '../examples/valid/command-result-v1.json'
+    profileConfiguration:
+      name: profileConfigurationV1
+      title: Profile configuration v1
+      contentType: application/json
+      payload:
+        $ref: '../schemas/mqtt/profile-configuration-v1.schema.json'
+      examples:
+        - name: validatedSimulationProfile
+          summary: Complete simulation-only example in examples/valid/profile-configuration-v1.json.
+          payload:
+            $ref: '../examples/valid/profile-configuration-v1.json'
+    profileConfigurationAck:
+      name: profileConfigurationAckV1
+      title: Profile configuration acknowledgement v1
+      contentType: application/json
+      payload:
+        $ref: '../schemas/mqtt/profile-configuration-ack-v1.schema.json'
+      examples:
+        - name: validatedProfileAck
+          summary: Complete example in examples/valid/profile-configuration-ack-v1.json.
+          payload:
+            $ref: '../examples/valid/profile-configuration-ack-v1.json'
+    otaNotification:
+      name: otaNotificationV1
+      title: OTA notification v1
+      contentType: application/json
+      payload:
+        $ref: '../schemas/mqtt/ota-notification-v1.schema.json'
+      examples:
+        - name: validatedOtaNotification
+          summary: Complete non-operational example in examples/valid/ota-notification-v1.json.
+          payload:
+            $ref: '../examples/valid/ota-notification-v1.json'
+    otaStatus:
+      name: otaStatusV1
+      title: OTA status v1
+      contentType: application/json
+      payload:
+        $ref: '../schemas/mqtt/ota-status-v1.schema.json'
+      examples:
+        - name: validatedOtaStatus
+          summary: Complete non-operational example in examples/valid/ota-status-v1.json.
+          payload:
+            $ref: '../examples/valid/ota-status-v1.json'

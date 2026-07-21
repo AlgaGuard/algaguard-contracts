@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:mqtt:ota-notification:v1",
+  "title": "OTA notification envelope v1",
+  "allOf": [
+    {
+      "$ref": "urn:algaguard:schema:common:event-envelope:v1"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "urn:algaguard:schema:mqtt:ota-notification:v1"
+        },
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "releaseId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "version": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            "hardwareModel": {
+              "type": "string",
+              "pattern": "^[A-Z0-9][A-Z0-9._-]{1,63}$"
+            },
+            "downloadUrl": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://"
+            },
+            "sizeBytes": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483648
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "signature": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9+/]+={0,2}$",
+              "minLength": 40,
+              "maxLength": 512
+            },
+            "signatureAlgorithm": {
+              "type": "string",
+              "enum": ["ED25519", "ECDSA_P256_SHA256"]
+            },
+            "publishedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "expiresAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "rolloutRing": {
+              "type": "string",
+              "enum": ["DEVELOPMENT", "INTERNAL", "BETA", "PRODUCTION"]
+            },
+            "mandatory": {
+              "type": "boolean"
+            },
+            "minimumSupportedVersion": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            "releaseNotesUrl": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://"
+            },
+            "extensions": {
+              "$ref": "urn:algaguard:schema:common:extension-map:v1"
+            }
+          },
+          "required": [
+            "releaseId",
+            "version",
+            "hardwareModel",
+            "downloadUrl",
+            "sizeBytes",
+            "sha256",
+            "signature",
+            "signatureAlgorithm",
+            "publishedAt",
+            "expiresAt",
+            "rolloutRing",
+            "mandatory"
+          ]
+        }
+      },
+      "required": ["deviceId"]
+    }
+  ]
+}

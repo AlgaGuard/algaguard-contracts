@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:mqtt:command-result:v1",
+  "title": "Device command result envelope v1",
+  "allOf": [
+    {
+      "$ref": "urn:algaguard:schema:common:event-envelope:v1"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "urn:algaguard:schema:mqtt:command-result:v1"
+        },
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "commandId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "status": {
+              "type": "string",
+              "enum": ["RECEIVED", "IN_PROGRESS", "SUCCEEDED", "FAILED", "REJECTED", "EXPIRED"]
+            },
+            "reportedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "progressPercent": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "result": {
+              "type": "object",
+              "additionalProperties": true,
+              "maxProperties": 16
+            },
+            "error": {
+              "$ref": "urn:algaguard:schema:common:error-detail:v1"
+            },
+            "extensions": {
+              "$ref": "urn:algaguard:schema:common:extension-map:v1"
+            }
+          },
+          "required": ["commandId", "status", "reportedAt"],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "enum": ["FAILED", "REJECTED"]
+                  }
+                },
+                "required": ["status"]
+              },
+              "then": {
+                "required": ["error"]
+              }
+            }
+          ]
+        }
+      },
+      "required": ["deviceId"]
+    }
+  ]
+}

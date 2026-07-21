@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:mqtt:device-health:v1",
+  "title": "Device health envelope v1",
+  "allOf": [
+    {
+      "$ref": "urn:algaguard:schema:common:event-envelope:v1"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "urn:algaguard:schema:mqtt:device-health:v1"
+        },
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "firmwareVersion": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            "hardwareModel": {
+              "type": "string",
+              "pattern": "^[A-Z0-9][A-Z0-9._-]{1,63}$"
+            },
+            "uptimeSeconds": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "maxLength": 20
+            },
+            "freeHeapBytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "freePsramBytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "detectedFlashBytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "detectedPsramBytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "wifiRssiDbm": {
+              "type": "integer",
+              "minimum": -127,
+              "maximum": 0
+            },
+            "networkState": {
+              "type": "string",
+              "enum": ["UNPROVISIONED", "CONNECTING", "ONLINE", "OFFLINE"]
+            },
+            "mqttConnected": {
+              "type": "boolean"
+            },
+            "sdPresent": {
+              "type": "boolean"
+            },
+            "sdHealthy": {
+              "type": "boolean"
+            },
+            "sdFreeBytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "rtcValid": {
+              "type": "boolean"
+            },
+            "timestampQuality": {
+              "$ref": "urn:algaguard:schema:common:timestamp-quality:v1"
+            },
+            "lastTimeSyncAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "batteryPercent": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "batteryVoltageV": {
+              "type": "number",
+              "minimum": 0
+            },
+            "chargingState": {
+              "type": "string",
+              "enum": ["UNKNOWN", "NOT_CHARGING", "CHARGING", "FULL", "FAULT"]
+            },
+            "externalPowerPresent": {
+              "type": "boolean"
+            },
+            "activeProfile": {
+              "$ref": "urn:algaguard:schema:common:profile-reference:v1"
+            },
+            "lastTelemetrySequence": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "maxLength": 20
+            },
+            "extensions": {
+              "$ref": "urn:algaguard:schema:common:extension-map:v1"
+            }
+          },
+          "required": [
+            "firmwareVersion",
+            "hardwareModel",
+            "uptimeSeconds",
+            "freeHeapBytes",
+            "freePsramBytes",
+            "detectedFlashBytes",
+            "detectedPsramBytes",
+            "wifiRssiDbm",
+            "networkState",
+            "mqttConnected",
+            "sdPresent",
+            "sdHealthy",
+            "sdFreeBytes",
+            "rtcValid",
+            "timestampQuality",
+            "batteryPercent",
+            "batteryVoltageV",
+            "chargingState",
+            "externalPowerPresent",
+            "activeProfile",
+            "lastTelemetrySequence"
+          ]
+        }
+      },
+      "required": ["deviceId"]
+    }
+  ]
+}

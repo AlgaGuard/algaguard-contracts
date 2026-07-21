@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:mqtt:command:v1",
+  "title": "Device command envelope v1",
+  "$defs": {
+    "emptyParameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "maxProperties": 0
+    },
+    "indicatorParameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "red": {
+          "type": "string",
+          "enum": ["ON", "OFF"]
+        },
+        "green": {
+          "type": "string",
+          "enum": ["ON", "OFF"]
+        },
+        "blue": {
+          "type": "string",
+          "enum": ["ON", "OFF"]
+        }
+      },
+      "required": ["red", "green", "blue"]
+    },
+    "profileParameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "configurationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "profileId": {
+          "$ref": "urn:algaguard:schema:common:profile-reference:v1#/$defs/profileId"
+        },
+        "profileVersion": {
+          "$ref": "urn:algaguard:schema:common:profile-reference:v1#/$defs/profileVersion"
+        }
+      },
+      "required": ["configurationId", "profileId", "profileVersion"]
+    },
+    "timeParameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "serverTime": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["serverTime"]
+    },
+    "otaParameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "releaseId": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "required": ["releaseId"]
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "urn:algaguard:schema:common:event-envelope:v1"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "urn:algaguard:schema:mqtt:command:v1"
+        },
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "commandId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "commandType": {
+              "type": "string",
+              "enum": [
+                "REQUEST_STATUS",
+                "SET_INDICATOR_STATE",
+                "APPLY_PROFILE_CONFIGURATION",
+                "SYNC_TIME",
+                "REBOOT",
+                "PREPARE_OTA"
+              ]
+            },
+            "createdAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "expiresAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "issuedBy": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "parameters": {
+              "type": "object"
+            },
+            "correlationId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "extensions": {
+              "$ref": "urn:algaguard:schema:common:extension-map:v1"
+            }
+          },
+          "required": [
+            "commandId",
+            "commandType",
+            "createdAt",
+            "expiresAt",
+            "issuedBy",
+            "parameters"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "commandType": {
+                    "enum": ["REQUEST_STATUS", "REBOOT"]
+                  }
+                },
+                "required": ["commandType"]
+              },
+              "then": {
+                "properties": {
+                  "parameters": {
+                    "$ref": "#/$defs/emptyParameters"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "commandType": {
+                    "const": "SET_INDICATOR_STATE"
+                  }
+                },
+                "required": ["commandType"]
+              },
+              "then": {
+                "properties": {
+                  "parameters": {
+                    "$ref": "#/$defs/indicatorParameters"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "commandType": {
+                    "const": "APPLY_PROFILE_CONFIGURATION"
+                  }
+                },
+                "required": ["commandType"]
+              },
+              "then": {
+                "properties": {
+                  "parameters": {
+                    "$ref": "#/$defs/profileParameters"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "commandType": {
+                    "const": "SYNC_TIME"
+                  }
+                },
+                "required": ["commandType"]
+              },
+              "then": {
+                "properties": {
+                  "parameters": {
+                    "$ref": "#/$defs/timeParameters"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "commandType": {
+                    "const": "PREPARE_OTA"
+                  }
+                },
+                "required": ["commandType"]
+              },
+              "then": {
+                "properties": {
+                  "parameters": {
+                    "$ref": "#/$defs/otaParameters"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "required": ["deviceId"]
+    }
+  ]
+}

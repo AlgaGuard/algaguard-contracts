@@ -1,0 +1,140 @@
+openapi: 3.1.0
+info:
+  title: AlgaGuard common API components
+  version: 1.0.0
+  description: Shared provider-neutral components for AlgaGuard service APIs.
+paths: {}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Keycloak-issued human-user JWT validated by the API Gateway and services.
+  parameters:
+    CorrelationId:
+      name: X-Correlation-ID
+      in: header
+      required: false
+      description: Caller-supplied UUID propagated across HTTP, MQTT, service calls, and audit events.
+      schema:
+        $ref: '#/components/schemas/Uuid'
+    PageCursor:
+      name: cursor
+      in: query
+      required: false
+      description: Opaque continuation cursor from the preceding page.
+      schema:
+        type: string
+        maxLength: 512
+    PageLimit:
+      name: limit
+      in: query
+      required: false
+      description: Maximum records to return.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 200
+        default: 50
+    FromTime:
+      name: from
+      in: query
+      required: true
+      description: Inclusive UTC RFC 3339 range start.
+      schema:
+        $ref: '#/components/schemas/UtcTimestamp'
+    ToTime:
+      name: to
+      in: query
+      required: true
+      description: Exclusive UTC RFC 3339 range end.
+      schema:
+        $ref: '#/components/schemas/UtcTimestamp'
+  headers:
+    CorrelationId:
+      description: UUID used to correlate this response with downstream work.
+      schema:
+        $ref: '#/components/schemas/Uuid'
+  schemas:
+    Uuid:
+      type: string
+      format: uuid
+    DeviceId:
+      type: string
+      pattern: '^AG-[0-9]{6}$'
+    UtcTimestamp:
+      type: string
+      format: date-time
+    PageInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        nextCursor:
+          type:
+            - string
+            - 'null'
+          maxLength: 512
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 200
+      required:
+        - nextCursor
+        - limit
+    ProblemDetails:
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          type: string
+          format: uri
+        title:
+          type: string
+          maxLength: 128
+        status:
+          type: integer
+          minimum: 400
+          maximum: 599
+        detail:
+          type: string
+          maxLength: 1024
+        instance:
+          type: string
+          format: uri-reference
+        code:
+          type: string
+          pattern: '^[A-Z][A-Z0-9_]{2,63}$'
+        correlationId:
+          $ref: '#/components/schemas/Uuid'
+        errors:
+          type: array
+          maxItems: 100
+          items:
+            type: object
+            additionalProperties: false
+            properties:
+              path:
+                type: string
+                maxLength: 256
+              message:
+                type: string
+                maxLength: 256
+            required:
+              - message
+      required:
+        - type
+        - title
+        - status
+        - code
+        - correlationId
+  responses:
+    Problem:
+      description: Request failed with provider-neutral problem details.
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/headers/CorrelationId'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'

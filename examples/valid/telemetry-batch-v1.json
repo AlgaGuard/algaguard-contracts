@@ -1,0 +1,156 @@
+{
+  "schema": "urn:algaguard:schema:mqtt:telemetry-batch:v1",
+  "schemaVersion": "1.0.0",
+  "messageId": "2c99b5de-cf0f-4a20-8a94-78f029b69b01",
+  "deviceId": "AG-000001",
+  "sentAt": "2026-07-22T10:00:10Z",
+  "payload": {
+    "batchId": "a1a5e0b8-b967-4aa3-8ce8-64c419932101",
+    "firstSequence": "1001",
+    "lastSequence": "1010",
+    "sampleCount": 10,
+    "activeProfile": {
+      "profileId": "11111111-1111-4111-8111-111111111111",
+      "profileVersion": "1.0.0"
+    },
+    "samples": [
+      {
+        "sequence": "1001",
+        "observedAt": "2026-07-22T10:00:00Z",
+        "timestampQuality": "NTP_SYNCED",
+        "uptimeMs": "1000",
+        "values": {
+          "temperatureC": 24.1,
+          "ph": 7.2,
+          "lightLux": 800,
+          "nitrateMgL": 1.2,
+          "phosphateMgL": 0.2,
+          "potassiumMgL": 2.1,
+          "batteryPercent": 82,
+          "batteryVoltageV": 11.8
+        },
+        "qualityFlags": ["SIMULATED"],
+        "simulationScenario": "phase-2-demo"
+      },
+      {
+        "sequence": "1002",
+        "observedAt": "2026-07-22T10:00:01Z",
+        "timestampQuality": "NTP_SYNCED",
+        "uptimeMs": "2000",
+        "values": {
+          "temperatureC": 24.2,
+          "ph": 7.2,
+          "lightLux": 805
+        },
+        "qualityFlags": ["SIMULATED"],
+        "simulationScenario": "phase-2-demo"
+      },
+      {
+        "sequence": "1003",
+        "observedAt": "2026-07-22T10:00:02Z",
+        "timestampQuality": "NTP_SYNCED",
+        "uptimeMs": "3000",
+        "values": {
+          "temperatureC": 24.2,
+          "ph": 7.21,
+          "lightLux": 810
+        },
+        "qualityFlags": ["SIMULATED"],
+        "simulationScenario": "phase-2-demo"
+      },
+      {
+        "sequence": "1004",
+        "observedAt": "2026-07-22T10:00:03Z",
+        "timestampQuality": "NTP_SYNCED",
+        "uptimeMs": "4000",
+        "values": {
+          "temperatureC": 24.3,
+          "ph": 7.21,
+          "lightLux": 815
+        },
+        "qualityFlags": ["SIMULATED"],
+        "simulationScenario": "phase-2-demo"
+      },
+      {
+        "sequence": "1005",
+        "observedAt": "2026-07-22T10:00:04Z",
+        "timestampQuality": "NTP_SYNCED",
+        "uptimeMs": "5000",
+        "values": {
+          "temperatureC": 24.3,
+          "ph": 7.22,
+          "lightLux": 820
+        },
+        "qualityFlags": ["SIMULATED"],
+        "simulationScenario": "phase-2-demo"
+      },
+      {
+        "sequence": "1006",
+        "observedAt": "2026-07-22T10:00:05Z",
+        "timestampQuality": "NTP_SYNCED",
+        "uptimeMs": "6000",
+        "values": {
+          "temperatureC": 24.4,
+          "ph": 7.22,
+          "lightLux": 825
+        },
+        "qualityFlags": ["SIMULATED"],
+        "simulationScenario": "phase-2-demo"
+      },
+      {
+        "sequence": "1007",
+        "observedAt": "2026-07-22T10:00:06Z",
+        "timestampQuality": "NTP_SYNCED",
+        "uptimeMs": "7000",
+        "values": {
+          "temperatureC": 24.4,
+          "ph": 7.23,
+          "lightLux": 830
+        },
+        "qualityFlags": ["SIMULATED"],
+        "simulationScenario": "phase-2-demo"
+      },
+      {
+        "sequence": "1008",
+        "observedAt": "2026-07-22T10:00:07Z",
+        "timestampQuality": "NTP_SYNCED",
+        "uptimeMs": "8000",
+        "values": {
+          "temperatureC": 24.5,
+          "ph": 7.23,
+          "lightLux": 835
+        },
+        "qualityFlags": ["SIMULATED"],
+        "simulationScenario": "phase-2-demo"
+      },
+      {
+        "sequence": "1009",
+        "observedAt": "2026-07-22T10:00:08Z",
+        "timestampQuality": "RTC_HOLDOVER",
+        "uptimeMs": "9000",
+        "values": {
+          "temperatureC": 24.5,
+          "ph": 7.24,
+          "lightLux": 840
+        },
+        "qualityFlags": ["SIMULATED"],
+        "simulationScenario": "phase-2-demo"
+      },
+      {
+        "sequence": "1010",
+        "observedAt": "2026-07-22T10:00:09Z",
+        "timestampQuality": "RTC_HOLDOVER",
+        "uptimeMs": "10000",
+        "values": {
+          "temperatureC": 24.6,
+          "ph": 7.24,
+          "lightLux": 845
+        },
+        "qualityFlags": ["SIMULATED"],
+        "simulationScenario": "phase-2-demo"
+      }
+    ],
+    "isReplay": false,
+    "createdFromSd": false
+  }
+}

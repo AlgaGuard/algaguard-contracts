@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:common:parameter-values:v1",
+  "title": "Canonical parameter values v1",
+  "description": "Canonical transport values only. Numeric limits are representational and are not scientific warning thresholds.",
+  "type": "object",
+  "additionalProperties": false,
+  "minProperties": 1,
+  "properties": {
+    "temperatureC": {
+      "type": "number"
+    },
+    "ph": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 14
+    },
+    "lightLux": {
+      "type": "number",
+      "minimum": 0
+    },
+    "nitrateMgL": {
+      "type": "number",
+      "minimum": 0
+    },
+    "phosphateMgL": {
+      "type": "number",
+      "minimum": 0
+    },
+    "potassiumMgL": {
+      "type": "number",
+      "minimum": 0
+    },
+    "batteryPercent": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "batteryVoltageV": {
+      "type": "number",
+      "minimum": 0
+    }
+  }
+}

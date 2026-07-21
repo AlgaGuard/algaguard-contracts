@@ -1,0 +1,16 @@
+{
+  "schema": "urn:algaguard:schema:mqtt:profile-configuration-ack:v1",
+  "schemaVersion": "1.0.0",
+  "messageId": "5190c210-0634-4169-8040-963a6af42001",
+  "deviceId": "AG-000001",
+  "sentAt": "2026-07-22T10:05:02Z",
+  "payload": {
+    "configurationId": "22222222-2222-4222-8222-222222222222",
+    "profileId": "11111111-1111-4111-8111-111111111111",
+    "profileVersion": "1.0.0",
+    "deviceId": "AG-000001",
+    "status": "APPLIED",
+    "appliedAt": "2026-07-22T10:05:02Z",
+    "activeConfigurationHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  }
+}

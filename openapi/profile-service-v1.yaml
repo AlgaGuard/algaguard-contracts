@@ -1,0 +1,280 @@
+openapi: 3.1.0
+info:
+  title: AlgaGuard Profile Service API
+  version: 1.0.0
+  description: User-defined algae profiles, immutable versions, cloning, and device/tank assignment. Structural validation is not scientific approval.
+servers:
+  - url: https://api.algaguard.example
+    description: Placeholder; the real portable API domain is TBD.
+security:
+  - bearerAuth: []
+tags:
+  - name: Profiles
+    description: Organization-authorized profile operations.
+paths:
+  /api/v1/profiles:
+    get:
+      tags: [Profiles]
+      operationId: listProfiles
+      description: List visible profiles; requires profile read permission and returns immutable latest-version references.
+      parameters:
+        - $ref: './common-components-v1.yaml#/components/parameters/CorrelationId'
+        - $ref: './common-components-v1.yaml#/components/parameters/PageCursor'
+        - $ref: './common-components-v1.yaml#/components/parameters/PageLimit'
+      responses:
+        '200':
+          description: Paginated profiles.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProfileSummary'
+                  page:
+                    $ref: './common-components-v1.yaml#/components/schemas/PageInfo'
+                required: [items, page]
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+    post:
+      tags: [Profiles]
+      operationId: createProfile
+      description: Create an empty user-defined profile; requires profile create permission and does not add scientific defaults.
+      parameters:
+        - $ref: './common-components-v1.yaml#/components/parameters/CorrelationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                  maxLength: 96
+                simulationOnly:
+                  type: boolean
+              required: [name, simulationOnly]
+      responses:
+        '201':
+          description: Profile created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileSummary'
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+  /api/v1/profiles/{profileId}:
+    parameters:
+      - $ref: '#/components/parameters/ProfileId'
+      - $ref: './common-components-v1.yaml#/components/parameters/CorrelationId'
+    get:
+      tags: [Profiles]
+      operationId: getProfile
+      description: Read a visible profile and its immutable version references; requires profile read permission.
+      responses:
+        '200':
+          description: Profile summary.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileSummary'
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+  /api/v1/profiles/{profileId}/clone:
+    parameters:
+      - $ref: '#/components/parameters/ProfileId'
+      - $ref: './common-components-v1.yaml#/components/parameters/CorrelationId'
+    post:
+      tags: [Profiles]
+      operationId: cloneProfile
+      description: Clone a visible profile into an authorized organization; requires read access to the source and create permission on the target.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                organizationId:
+                  $ref: './common-components-v1.yaml#/components/schemas/Uuid'
+                name:
+                  type: string
+                  minLength: 1
+                  maxLength: 96
+              required: [organizationId, name]
+      responses:
+        '201':
+          description: Cloned profile.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileSummary'
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+  /api/v1/profiles/{profileId}/versions:
+    parameters:
+      - $ref: '#/components/parameters/ProfileId'
+      - $ref: './common-components-v1.yaml#/components/parameters/CorrelationId'
+    post:
+      tags: [Profiles]
+      operationId: createProfileVersion
+      description: Publish a new immutable profile version after structural validation; requires profile edit permission and is audited.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                profileVersion:
+                  type: string
+                  pattern: '^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$'
+                parameters:
+                  type: object
+                  description: Structurally identical to the profile-configuration-v1 parameters object.
+                simulationOnly:
+                  type: boolean
+              required: [profileVersion, parameters, simulationOnly]
+      responses:
+        '201':
+          description: Immutable profile version created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileVersion'
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+  /api/v1/profiles/{profileId}/assignments:
+    parameters:
+      - $ref: '#/components/parameters/ProfileId'
+      - $ref: './common-components-v1.yaml#/components/parameters/CorrelationId'
+    post:
+      tags: [Profiles]
+      operationId: assignProfile
+      description: Assign an immutable profile version to an authorized device or tank; requires profile assignment permission and is audited.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                profileVersion:
+                  type: string
+                  maxLength: 64
+                deviceId:
+                  $ref: './common-components-v1.yaml#/components/schemas/DeviceId'
+                tankId:
+                  $ref: './common-components-v1.yaml#/components/schemas/Uuid'
+              required: [profileVersion]
+              oneOf:
+                - required: [deviceId]
+                - required: [tankId]
+      responses:
+        '201':
+          description: Active assignment created and configuration delivery requested.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileAssignment'
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+  /api/v1/devices/{deviceId}/active-profile:
+    parameters:
+      - $ref: '#/components/parameters/DeviceId'
+      - $ref: './common-components-v1.yaml#/components/parameters/CorrelationId'
+    get:
+      tags: [Profiles]
+      operationId: getActiveDeviceProfile
+      description: Read the desired and last-applied immutable profile references; requires device and profile read permission.
+      responses:
+        '200':
+          description: Active profile assignment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileAssignment'
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+components:
+  securitySchemes:
+    bearerAuth:
+      $ref: './common-components-v1.yaml#/components/securitySchemes/bearerAuth'
+  parameters:
+    ProfileId:
+      name: profileId
+      in: path
+      required: true
+      description: Profile UUID.
+      schema:
+        $ref: './common-components-v1.yaml#/components/schemas/Uuid'
+    DeviceId:
+      name: deviceId
+      in: path
+      required: true
+      description: AlgaGuard device ID.
+      schema:
+        $ref: './common-components-v1.yaml#/components/schemas/DeviceId'
+  schemas:
+    ProfileSummary:
+      type: object
+      additionalProperties: false
+      properties:
+        profileId:
+          $ref: './common-components-v1.yaml#/components/schemas/Uuid'
+        name:
+          type: string
+          maxLength: 96
+        latestVersion:
+          type:
+            - string
+            - 'null'
+          maxLength: 64
+        simulationOnly:
+          type: boolean
+      required: [profileId, name, latestVersion, simulationOnly]
+    ProfileVersion:
+      type: object
+      additionalProperties: false
+      properties:
+        profileId:
+          $ref: './common-components-v1.yaml#/components/schemas/Uuid'
+        profileVersion:
+          type: string
+          maxLength: 64
+        parameters:
+          type: object
+        simulationOnly:
+          type: boolean
+        createdAt:
+          $ref: './common-components-v1.yaml#/components/schemas/UtcTimestamp'
+      required: [profileId, profileVersion, parameters, simulationOnly, createdAt]
+    ProfileAssignment:
+      type: object
+      additionalProperties: false
+      properties:
+        assignmentId:
+          $ref: './common-components-v1.yaml#/components/schemas/Uuid'
+        profileId:
+          $ref: './common-components-v1.yaml#/components/schemas/Uuid'
+        profileVersion:
+          type: string
+          maxLength: 64
+        desiredConfigurationId:
+          $ref: './common-components-v1.yaml#/components/schemas/Uuid'
+        appliedConfigurationHash:
+          type:
+            - string
+            - 'null'
+          pattern: '^[0-9a-f]{64}$'
+      required:
+        [assignmentId, profileId, profileVersion, desiredConfigurationId, appliedConfigurationHash]

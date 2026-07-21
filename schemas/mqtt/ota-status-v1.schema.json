@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:mqtt:ota-status:v1",
+  "title": "OTA status envelope v1",
+  "allOf": [
+    {
+      "$ref": "urn:algaguard:schema:common:event-envelope:v1"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "urn:algaguard:schema:mqtt:ota-status:v1"
+        },
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "releaseId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "NOTIFIED",
+                "DOWNLOADING",
+                "DOWNLOADED",
+                "VERIFIED",
+                "INSTALLING",
+                "PENDING_BOOT_VALIDATION",
+                "SUCCEEDED",
+                "FAILED",
+                "ROLLED_BACK",
+                "REJECTED"
+              ]
+            },
+            "progressPercent": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "downloadedBytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2147483648
+            },
+            "error": {
+              "$ref": "urn:algaguard:schema:common:error-detail:v1"
+            },
+            "reportedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "runningVersion": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            "extensions": {
+              "$ref": "urn:algaguard:schema:common:extension-map:v1"
+            }
+          },
+          "required": [
+            "releaseId",
+            "status",
+            "progressPercent",
+            "downloadedBytes",
+            "reportedAt",
+            "runningVersion"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "enum": ["FAILED", "REJECTED"]
+                  }
+                },
+                "required": ["status"]
+              },
+              "then": {
+                "required": ["error"]
+              }
+            }
+          ]
+        }
+      },
+      "required": ["deviceId"]
+    }
+  ]
+}

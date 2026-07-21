@@ -1,0 +1,38 @@
+name: Breaking contract change
+description: Propose a reviewed new contract version and migration.
+title: '[breaking]: '
+labels:
+  - contracts
+  - breaking-change
+  - phase-2
+body:
+  - type: textarea
+    id: reason
+    attributes:
+      label: Reason
+      description: Explain why a compatible addition is insufficient.
+    validations:
+      required: true
+  - type: textarea
+    id: consumers
+    attributes:
+      label: Consumer impact
+      description: List every affected producer and consumer.
+    validations:
+      required: true
+  - type: textarea
+    id: migration
+    attributes:
+      label: Versioning and migration plan
+      description: Identify the new schema/topic version, ADR, coexistence, and rollback plan.
+    validations:
+      required: true
+  - type: checkboxes
+    id: gates
+    attributes:
+      label: Required gates
+      options:
+        - label: A new versioned file is proposed; no released schema is edited in place.
+          required: true
+        - label: Compatibility tests, examples, changelog, and migration guidance will be included.
+          required: true
