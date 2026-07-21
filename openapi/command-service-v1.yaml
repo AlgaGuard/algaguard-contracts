@@ -1,0 +1,150 @@
+openapi: 3.1.0
+info:
+  title: AlgaGuard Command Service API
+  version: 1.0.0
+  description: Authorized creation and status tracking for expiring MVP device commands.
+servers:
+  - url: https://api.algaguard.example
+    description: Placeholder; the real portable API domain is TBD.
+security:
+  - bearerAuth: []
+tags:
+  - name: Commands
+    description: Audited, idempotent device command operations.
+paths:
+  /api/v1/devices/{deviceId}/commands:
+    parameters:
+      - $ref: '#/components/parameters/DeviceId'
+      - $ref: './common-components-v1.yaml#/components/parameters/CorrelationId'
+    post:
+      tags: [Commands]
+      operationId: createCommand
+      description: Authorize and create an expiring non-retained command; requires command execute permission and records an audit event before publish.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCommand'
+      responses:
+        '202':
+          description: Command accepted for delivery.
+          headers:
+            X-Correlation-ID:
+              $ref: './common-components-v1.yaml#/components/headers/CorrelationId'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandStatus'
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+    get:
+      tags: [Commands]
+      operationId: listRecentCommands
+      description: List recent commands for a visible device; requires command read permission and pagination.
+      parameters:
+        - $ref: './common-components-v1.yaml#/components/parameters/PageCursor'
+        - $ref: './common-components-v1.yaml#/components/parameters/PageLimit'
+      responses:
+        '200':
+          description: Paginated recent commands.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CommandStatus'
+                  page:
+                    $ref: './common-components-v1.yaml#/components/schemas/PageInfo'
+                required: [items, page]
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+  /api/v1/commands/{commandId}:
+    parameters:
+      - $ref: '#/components/parameters/CommandId'
+      - $ref: './common-components-v1.yaml#/components/parameters/CorrelationId'
+    get:
+      tags: [Commands]
+      operationId: getCommandStatus
+      description: Read the authorized command lifecycle, expiry, and latest device result; requires command read permission.
+      responses:
+        '200':
+          description: Command status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandStatus'
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+components:
+  securitySchemes:
+    bearerAuth:
+      $ref: './common-components-v1.yaml#/components/securitySchemes/bearerAuth'
+  parameters:
+    DeviceId:
+      name: deviceId
+      in: path
+      required: true
+      description: AlgaGuard device ID.
+      schema:
+        $ref: './common-components-v1.yaml#/components/schemas/DeviceId'
+    CommandId:
+      name: commandId
+      in: path
+      required: true
+      description: Command UUID used for idempotency.
+      schema:
+        $ref: './common-components-v1.yaml#/components/schemas/Uuid'
+  schemas:
+    CommandType:
+      type: string
+      enum:
+        [
+          REQUEST_STATUS,
+          SET_INDICATOR_STATE,
+          APPLY_PROFILE_CONFIGURATION,
+          SYNC_TIME,
+          REBOOT,
+          PREPARE_OTA,
+        ]
+    CreateCommand:
+      type: object
+      additionalProperties: false
+      properties:
+        commandId:
+          $ref: './common-components-v1.yaml#/components/schemas/Uuid'
+        commandType:
+          $ref: '#/components/schemas/CommandType'
+        expiresAt:
+          $ref: './common-components-v1.yaml#/components/schemas/UtcTimestamp'
+        parameters:
+          type: object
+          maxProperties: 16
+      required: [commandId, commandType, expiresAt, parameters]
+    CommandStatus:
+      type: object
+      additionalProperties: false
+      properties:
+        commandId:
+          $ref: './common-components-v1.yaml#/components/schemas/Uuid'
+        deviceId:
+          $ref: './common-components-v1.yaml#/components/schemas/DeviceId'
+        commandType:
+          $ref: '#/components/schemas/CommandType'
+        status:
+          type: string
+          enum: [QUEUED, RECEIVED, IN_PROGRESS, SUCCEEDED, FAILED, REJECTED, EXPIRED]
+        createdAt:
+          $ref: './common-components-v1.yaml#/components/schemas/UtcTimestamp'
+        expiresAt:
+          $ref: './common-components-v1.yaml#/components/schemas/UtcTimestamp'
+        reportedAt:
+          type:
+            - string
+            - 'null'
+          format: date-time
+      required: [commandId, deviceId, commandType, status, createdAt, expiresAt, reportedAt]

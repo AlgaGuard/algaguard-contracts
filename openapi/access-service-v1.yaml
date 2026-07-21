@@ -1,0 +1,288 @@
+openapi: 3.1.0
+info:
+  title: AlgaGuard Access Service API
+  version: 1.0.0
+  description: Organizations, membership, invitations, role management, revocation, and ownership transfer.
+servers:
+  - url: https://api.algaguard.example
+    description: Placeholder; the real portable API domain is TBD.
+security:
+  - bearerAuth: []
+tags:
+  - name: Access
+    description: Server-enforced organization and device authorization operations.
+paths:
+  /api/v1/organizations:
+    get:
+      tags: [Access]
+      operationId: listOrganizations
+      description: List organizations for the authenticated Keycloak subject; any active member may call.
+      parameters:
+        - $ref: './common-components-v1.yaml#/components/parameters/CorrelationId'
+        - $ref: './common-components-v1.yaml#/components/parameters/PageCursor'
+        - $ref: './common-components-v1.yaml#/components/parameters/PageLimit'
+      responses:
+        '200':
+          description: Paginated organizations.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Organization'
+                  page:
+                    $ref: './common-components-v1.yaml#/components/schemas/PageInfo'
+                required: [items, page]
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+    post:
+      tags: [Access]
+      operationId: createOrganization
+      description: Create an organization owned by the authenticated subject; creation is audited.
+      parameters:
+        - $ref: './common-components-v1.yaml#/components/parameters/CorrelationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                  maxLength: 120
+              required: [name]
+      responses:
+        '201':
+          description: Organization created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+  /api/v1/organizations/{organizationId}/members:
+    parameters:
+      - $ref: '#/components/parameters/OrganizationId'
+      - $ref: './common-components-v1.yaml#/components/parameters/CorrelationId'
+    get:
+      tags: [Access]
+      operationId: listOrganizationMembers
+      description: List organization members; requires membership-read permission and uses pagination.
+      parameters:
+        - $ref: './common-components-v1.yaml#/components/parameters/PageCursor'
+        - $ref: './common-components-v1.yaml#/components/parameters/PageLimit'
+      responses:
+        '200':
+          description: Paginated members.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Membership'
+                  page:
+                    $ref: './common-components-v1.yaml#/components/schemas/PageInfo'
+                required: [items, page]
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+  /api/v1/organizations/{organizationId}/invitations:
+    parameters:
+      - $ref: '#/components/parameters/OrganizationId'
+      - $ref: './common-components-v1.yaml#/components/parameters/CorrelationId'
+    post:
+      tags: [Access]
+      operationId: createInvitation
+      description: Create an expiring one-time invitation; requires member-administration permission and is audited.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                email:
+                  type: string
+                  format: email
+                role:
+                  $ref: '#/components/schemas/Role'
+                expiresAt:
+                  $ref: './common-components-v1.yaml#/components/schemas/UtcTimestamp'
+              required: [email, role, expiresAt]
+      responses:
+        '201':
+          description: Invitation metadata created; the one-time token is delivered separately and is never logged.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  invitationId:
+                    $ref: './common-components-v1.yaml#/components/schemas/Uuid'
+                  expiresAt:
+                    $ref: './common-components-v1.yaml#/components/schemas/UtcTimestamp'
+                required: [invitationId, expiresAt]
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+  /api/v1/invitations/{invitationId}/accept:
+    parameters:
+      - $ref: '#/components/parameters/InvitationId'
+      - $ref: './common-components-v1.yaml#/components/parameters/CorrelationId'
+    post:
+      tags: [Access]
+      operationId: acceptInvitation
+      description: Accept a valid one-time invitation for the authenticated subject; reused or expired tokens are rejected and audited.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                invitationToken:
+                  type: string
+                  minLength: 32
+                  maxLength: 512
+              required: [invitationToken]
+      responses:
+        '200':
+          description: Membership created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Membership'
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+  /api/v1/organizations/{organizationId}/members/{memberId}:
+    parameters:
+      - $ref: '#/components/parameters/OrganizationId'
+      - $ref: '#/components/parameters/MemberId'
+      - $ref: './common-components-v1.yaml#/components/parameters/CorrelationId'
+    patch:
+      tags: [Access]
+      operationId: changeMemberRole
+      description: Change a member role; requires member-administration permission and cannot bypass owner-transfer rules.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                role:
+                  $ref: '#/components/schemas/Role'
+              required: [role]
+      responses:
+        '200':
+          description: Updated membership.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Membership'
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+    delete:
+      tags: [Access]
+      operationId: revokeMemberAccess
+      description: Revoke organization access; requires member-administration permission and is audited.
+      responses:
+        '204':
+          description: Access revoked.
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+  /api/v1/organizations/{organizationId}/ownership-transfer:
+    parameters:
+      - $ref: '#/components/parameters/OrganizationId'
+      - $ref: './common-components-v1.yaml#/components/parameters/CorrelationId'
+    post:
+      tags: [Access]
+      operationId: transferOrganizationOwnership
+      description: Transfer ownership to an eligible member; requires current owner permission, confirmation, and audit.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                newOwnerMemberId:
+                  $ref: './common-components-v1.yaml#/components/schemas/Uuid'
+              required: [newOwnerMemberId]
+      responses:
+        '200':
+          description: Ownership transferred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
+components:
+  securitySchemes:
+    bearerAuth:
+      $ref: './common-components-v1.yaml#/components/securitySchemes/bearerAuth'
+  parameters:
+    OrganizationId:
+      name: organizationId
+      in: path
+      required: true
+      description: Organization UUID.
+      schema:
+        $ref: './common-components-v1.yaml#/components/schemas/Uuid'
+    InvitationId:
+      name: invitationId
+      in: path
+      required: true
+      description: Invitation UUID.
+      schema:
+        $ref: './common-components-v1.yaml#/components/schemas/Uuid'
+    MemberId:
+      name: memberId
+      in: path
+      required: true
+      description: Membership UUID.
+      schema:
+        $ref: './common-components-v1.yaml#/components/schemas/Uuid'
+  schemas:
+    Role:
+      type: string
+      enum: [OWNER, ADMIN, OPERATOR, VIEWER]
+    Organization:
+      type: object
+      additionalProperties: false
+      properties:
+        organizationId:
+          $ref: './common-components-v1.yaml#/components/schemas/Uuid'
+        name:
+          type: string
+          maxLength: 120
+        currentUserRole:
+          $ref: '#/components/schemas/Role'
+      required: [organizationId, name, currentUserRole]
+    Membership:
+      type: object
+      additionalProperties: false
+      properties:
+        memberId:
+          $ref: './common-components-v1.yaml#/components/schemas/Uuid'
+        subjectId:
+          type: string
+          maxLength: 128
+        role:
+          $ref: '#/components/schemas/Role'
+      required: [memberId, subjectId, role]

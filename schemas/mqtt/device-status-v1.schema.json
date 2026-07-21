@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:mqtt:device-status:v1",
+  "title": "Device status envelope v1",
+  "allOf": [
+    {
+      "$ref": "urn:algaguard:schema:common:event-envelope:v1"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "urn:algaguard:schema:mqtt:device-status:v1"
+        },
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": ["ONLINE", "OFFLINE", "BOOTING", "PROVISIONING", "UPDATING", "DEGRADED"]
+            },
+            "reason": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "bootReason": {
+              "type": "string",
+              "maxLength": 64
+            },
+            "firmwareVersion": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            "statusAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "sessionId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "extensions": {
+              "$ref": "urn:algaguard:schema:common:extension-map:v1"
+            }
+          },
+          "required": ["status", "firmwareVersion", "statusAt", "sessionId"]
+        }
+      },
+      "required": ["deviceId"]
+    }
+  ]
+}

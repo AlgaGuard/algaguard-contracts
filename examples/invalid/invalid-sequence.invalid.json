@@ -1,0 +1,28 @@
+{
+  "schema": "urn:algaguard:schema:mqtt:telemetry-batch:v1",
+  "schemaVersion": "1.0.0",
+  "messageId": "2c99b5de-cf0f-4a20-8a94-78f029b69b03",
+  "deviceId": "AG-000001",
+  "sentAt": "2026-07-22T10:00:01Z",
+  "payload": {
+    "batchId": "a1a5e0b8-b967-4aa3-8ce8-64c419932103",
+    "firstSequence": "01",
+    "lastSequence": "01",
+    "sampleCount": 1,
+    "activeProfile": {
+      "profileId": "11111111-1111-4111-8111-111111111111",
+      "profileVersion": "1.0.0"
+    },
+    "samples": [
+      {
+        "sequence": "01",
+        "observedAt": "2026-07-22T10:00:00Z",
+        "timestampQuality": "NTP_SYNCED",
+        "uptimeMs": "1000",
+        "values": {
+          "temperatureC": 24
+        }
+      }
+    ]
+  }
+}

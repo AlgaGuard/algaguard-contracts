@@ -1,0 +1,21 @@
+{
+  "schema": "urn:algaguard:schema:mqtt:command:v1",
+  "schemaVersion": "1.0.0",
+  "messageId": "a9a351fd-b01f-466c-8833-ea20242b6b01",
+  "deviceId": "AG-000001",
+  "sentAt": "2026-07-22T10:10:00Z",
+  "correlationId": "623b6380-9860-42d1-850a-ec18c094dc01",
+  "payload": {
+    "commandId": "33333333-3333-4333-8333-333333333333",
+    "commandType": "SET_INDICATOR_STATE",
+    "createdAt": "2026-07-22T10:10:00Z",
+    "expiresAt": "2026-07-22T10:11:00Z",
+    "issuedBy": "user:6d2a6460-6b5b-4f1d-a668-b1ae1895e901",
+    "parameters": {
+      "red": "OFF",
+      "green": "ON",
+      "blue": "OFF"
+    },
+    "correlationId": "623b6380-9860-42d1-850a-ec18c094dc01"
+  }
+}

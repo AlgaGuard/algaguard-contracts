@@ -1,0 +1,35 @@
+name: Contract change
+description: Propose a compatible contract or documentation change.
+title: '[contract]: '
+labels:
+  - contracts
+  - phase-2
+body:
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objective
+      description: Describe the consumer need and affected contract.
+    validations:
+      required: true
+  - type: textarea
+    id: consumers
+    attributes:
+      label: Affected consumers
+      description: List firmware, services, clients, or later consumers.
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility analysis
+      description: Explain why the change is compatible and how examples and tests will prove it.
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety checks
+      options:
+        - label: No secrets, credentials, scientific claims, or runtime implementation are included.
+          required: true

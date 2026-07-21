@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:common:extension-map:v1",
+  "title": "Namespaced extension map v1",
+  "description": "Forward-compatible metadata. Keys must be namespaced and values must contain no secrets.",
+  "type": "object",
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)+(?:[.-][a-z0-9]+)*$",
+    "maxLength": 96
+  },
+  "additionalProperties": true,
+  "maxProperties": 32
+}

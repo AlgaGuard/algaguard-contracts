@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:mqtt:profile-configuration:v1",
+  "title": "Algae profile configuration envelope v1",
+  "$defs": {
+    "parameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "warningLow": {
+          "type": "number"
+        },
+        "warningHigh": {
+          "type": "number"
+        },
+        "criticalLow": {
+          "type": "number"
+        },
+        "criticalHigh": {
+          "type": "number"
+        }
+      },
+      "required": ["enabled", "unit"]
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "urn:algaguard:schema:common:event-envelope:v1"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "urn:algaguard:schema:mqtt:profile-configuration:v1"
+        },
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "configurationId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "profileId": {
+              "$ref": "urn:algaguard:schema:common:profile-reference:v1#/$defs/profileId"
+            },
+            "profileVersion": {
+              "$ref": "urn:algaguard:schema:common:profile-reference:v1#/$defs/profileVersion"
+            },
+            "profileName": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 96
+            },
+            "effectiveAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "generatedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "parameters": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "temperatureC": {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/parameter"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "unit": {
+                          "const": "CELSIUS"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "ph": {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/parameter"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "unit": {
+                          "const": "PH"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "lightLux": {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/parameter"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "unit": {
+                          "const": "LUX"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "nitrateMgL": {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/parameter"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "unit": {
+                          "const": "MG_L"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "phosphateMgL": {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/parameter"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "unit": {
+                          "const": "MG_L"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "potassiumMgL": {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/parameter"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "unit": {
+                          "const": "MG_L"
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "temperatureC",
+                "ph",
+                "lightLux",
+                "nitrateMgL",
+                "phosphateMgL",
+                "potassiumMgL"
+              ]
+            },
+            "configurationHash": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "simulationOnly": {
+              "type": "boolean"
+            },
+            "expiresAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "extensions": {
+              "$ref": "urn:algaguard:schema:common:extension-map:v1"
+            }
+          },
+          "required": [
+            "configurationId",
+            "profileId",
+            "profileVersion",
+            "profileName",
+            "effectiveAt",
+            "generatedAt",
+            "parameters",
+            "configurationHash",
+            "simulationOnly"
+          ]
+        }
+      },
+      "required": ["deviceId"]
+    }
+  ]
+}

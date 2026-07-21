@@ -1,0 +1,54 @@
+{
+  "schema": "urn:algaguard:schema:mqtt:profile-configuration:v1",
+  "schemaVersion": "1.0.0",
+  "messageId": "9edbcfdd-6d72-4bc2-b4d5-942654907b01",
+  "deviceId": "AG-000001",
+  "sentAt": "2026-07-22T10:05:00Z",
+  "payload": {
+    "configurationId": "22222222-2222-4222-8222-222222222222",
+    "profileId": "11111111-1111-4111-8111-111111111111",
+    "profileVersion": "1.0.0",
+    "profileName": "Simulation demonstration profile",
+    "effectiveAt": "2026-07-22T10:05:00Z",
+    "generatedAt": "2026-07-22T10:04:55Z",
+    "parameters": {
+      "temperatureC": {
+        "enabled": true,
+        "unit": "CELSIUS",
+        "warningLow": 18,
+        "warningHigh": 30,
+        "criticalLow": 15,
+        "criticalHigh": 35
+      },
+      "ph": {
+        "enabled": true,
+        "unit": "PH",
+        "warningLow": 6.5,
+        "warningHigh": 8,
+        "criticalLow": 6,
+        "criticalHigh": 8.5
+      },
+      "lightLux": {
+        "enabled": true,
+        "unit": "LUX",
+        "warningHigh": 1200,
+        "criticalHigh": 1500
+      },
+      "nitrateMgL": {
+        "enabled": false,
+        "unit": "MG_L"
+      },
+      "phosphateMgL": {
+        "enabled": false,
+        "unit": "MG_L"
+      },
+      "potassiumMgL": {
+        "enabled": false,
+        "unit": "MG_L"
+      }
+    },
+    "configurationHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "simulationOnly": true,
+    "expiresAt": "2026-08-22T10:05:00Z"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "schema": "urn:algaguard:schema:mqtt:command:v1",
+  "schemaVersion": "1.0.0",
+  "messageId": "a9a351fd-b01f-466c-8833-ea20242b6b02",
+  "deviceId": "AG-000001",
+  "sentAt": "2026-07-22T10:10:00Z",
+  "payload": {
+    "commandId": "33333333-3333-4333-8333-333333333334",
+    "commandType": "REQUEST_STATUS",
+    "createdAt": "2026-07-22T10:10:00Z",
+    "expiresAt": "2026-07-22T10:09:59Z",
+    "issuedBy": "user:6d2a6460-6b5b-4f1d-a668-b1ae1895e901",
+    "parameters": {}
+  }
+}

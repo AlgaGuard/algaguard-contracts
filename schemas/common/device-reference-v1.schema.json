@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:common:device-reference:v1",
+  "title": "Device reference v1",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "deviceId": {
+      "type": "string",
+      "pattern": "^AG-[0-9]{6}$",
+      "minLength": 9,
+      "maxLength": 9
+    }
+  },
+  "properties": {
+    "deviceId": {
+      "$ref": "#/$defs/deviceId"
+    }
+  },
+  "required": ["deviceId"]
+}

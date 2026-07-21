@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:mqtt:telemetry-sample:v1",
+  "title": "Telemetry sample v1",
+  "description": "One sampled observation. UNSYNCED samples omit observedAt and use sequence plus uptimeMs for relative ordering.",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "decimalSequence": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]{0,19})$",
+      "maxLength": 20
+    }
+  },
+  "properties": {
+    "sequence": {
+      "$ref": "#/$defs/decimalSequence"
+    },
+    "observedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "timestampQuality": {
+      "$ref": "urn:algaguard:schema:common:timestamp-quality:v1"
+    },
+    "uptimeMs": {
+      "$ref": "#/$defs/decimalSequence"
+    },
+    "values": {
+      "$ref": "urn:algaguard:schema:common:parameter-values:v1"
+    },
+    "qualityFlags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "SIMULATED",
+          "SENSOR_UNAVAILABLE",
+          "OUT_OF_EXPECTED_RANGE",
+          "CLOCK_UNSYNCED",
+          "SD_RECOVERED",
+          "ESTIMATED"
+        ]
+      },
+      "uniqueItems": true,
+      "maxItems": 6
+    },
+    "simulationScenario": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "extensions": {
+      "$ref": "urn:algaguard:schema:common:extension-map:v1"
+    }
+  },
+  "required": ["sequence", "timestampQuality", "uptimeMs", "values"],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "timestampQuality": {
+            "const": "UNSYNCED"
+          }
+        },
+        "required": ["timestampQuality"]
+      },
+      "then": {
+        "not": {
+          "required": ["observedAt"]
+        }
+      },
+      "else": {
+        "required": ["observedAt"]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "qualityFlags": {
+            "type": "array",
+            "contains": {
+              "const": "SIMULATED"
+            }
+          }
+        },
+        "required": ["qualityFlags"]
+      },
+      "then": {
+        "required": ["simulationScenario"]
+      }
+    }
+  ]
+}

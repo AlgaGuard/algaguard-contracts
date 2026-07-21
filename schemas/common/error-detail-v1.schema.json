@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:common:error-detail:v1",
+  "title": "Error detail v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "code": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]{2,63}$"
+    },
+    "message": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "path": {
+      "type": "string",
+      "maxLength": 256
+    },
+    "retryable": {
+      "type": "boolean"
+    }
+  },
+  "required": ["code", "message", "retryable"]
+}

@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:mqtt:telemetry-ack:v1",
+  "title": "Telemetry application acknowledgement envelope v1",
+  "allOf": [
+    {
+      "$ref": "urn:algaguard:schema:common:event-envelope:v1"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "urn:algaguard:schema:mqtt:telemetry-ack:v1"
+        },
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "ackId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "batchId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "status": {
+              "type": "string",
+              "enum": ["ACCEPTED", "PARTIALLY_ACCEPTED", "REJECTED", "DUPLICATE"]
+            },
+            "acceptedThroughSequence": {
+              "type": ["string", "null"],
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "maxLength": 20
+            },
+            "receivedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "duplicate": {
+              "type": "boolean"
+            },
+            "rejectedSequences": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,19})$",
+                "maxLength": 20
+              },
+              "uniqueItems": true,
+              "minItems": 1,
+              "maxItems": 120
+            },
+            "errors": {
+              "type": "array",
+              "items": {
+                "$ref": "urn:algaguard:schema:common:error-detail:v1"
+              },
+              "minItems": 1,
+              "maxItems": 120
+            },
+            "retryAfterSeconds": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 86400
+            },
+            "extensions": {
+              "$ref": "urn:algaguard:schema:common:extension-map:v1"
+            }
+          },
+          "required": [
+            "ackId",
+            "batchId",
+            "status",
+            "acceptedThroughSequence",
+            "receivedAt",
+            "duplicate"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "const": "REJECTED"
+                  }
+                },
+                "required": ["status"]
+              },
+              "then": {
+                "properties": {
+                  "acceptedThroughSequence": {
+                    "type": "null"
+                  },
+                  "duplicate": {
+                    "const": false
+                  }
+                },
+                "required": ["errors"]
+              },
+              "else": {
+                "properties": {
+                  "acceptedThroughSequence": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "const": "PARTIALLY_ACCEPTED"
+                  }
+                },
+                "required": ["status"]
+              },
+              "then": {
+                "required": ["rejectedSequences", "errors"]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "const": "DUPLICATE"
+                  }
+                },
+                "required": ["status"]
+              },
+              "then": {
+                "properties": {
+                  "duplicate": {
+                    "const": true
+                  }
+                }
+              },
+              "else": {
+                "properties": {
+                  "duplicate": {
+                    "const": false
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "required": ["deviceId"]
+    }
+  ]
+}

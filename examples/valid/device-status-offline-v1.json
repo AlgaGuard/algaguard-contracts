@@ -1,0 +1,14 @@
+{
+  "schema": "urn:algaguard:schema:mqtt:device-status:v1",
+  "schemaVersion": "1.0.0",
+  "messageId": "8a6d503c-50b4-4e0a-9004-22521ddc1d01",
+  "deviceId": "AG-000001",
+  "sentAt": "2026-07-22T10:00:00Z",
+  "payload": {
+    "status": "OFFLINE",
+    "reason": "MQTT_LAST_WILL",
+    "firmwareVersion": "0.0.0-contract-demo",
+    "statusAt": "2026-07-22T10:00:00Z",
+    "sessionId": "12cbc245-8ef0-4e56-8f02-4a605b1ac501"
+  }
+}

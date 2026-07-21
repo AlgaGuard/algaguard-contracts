@@ -1,0 +1,17 @@
+{
+  "schema": "urn:algaguard:schema:mqtt:command-result:v1",
+  "schemaVersion": "1.0.0",
+  "messageId": "76f39b6d-e1df-4a29-a261-584e3dc05901",
+  "deviceId": "AG-000001",
+  "sentAt": "2026-07-22T10:10:02Z",
+  "correlationId": "623b6380-9860-42d1-850a-ec18c094dc01",
+  "payload": {
+    "commandId": "33333333-3333-4333-8333-333333333333",
+    "status": "SUCCEEDED",
+    "reportedAt": "2026-07-22T10:10:02Z",
+    "progressPercent": 100,
+    "result": {
+      "indicatorStateApplied": true
+    }
+  }
+}

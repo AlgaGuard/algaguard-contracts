@@ -1,0 +1,45 @@
+{
+  "valid": {
+    "telemetry-batch-v1.json": "urn:algaguard:schema:mqtt:telemetry-batch:v1",
+    "telemetry-ack-v1.json": "urn:algaguard:schema:mqtt:telemetry-ack:v1",
+    "device-health-v1.json": "urn:algaguard:schema:mqtt:device-health:v1",
+    "device-status-online-v1.json": "urn:algaguard:schema:mqtt:device-status:v1",
+    "device-status-offline-v1.json": "urn:algaguard:schema:mqtt:device-status:v1",
+    "profile-configuration-v1.json": "urn:algaguard:schema:mqtt:profile-configuration:v1",
+    "profile-configuration-ack-v1.json": "urn:algaguard:schema:mqtt:profile-configuration-ack:v1",
+    "command-v1.json": "urn:algaguard:schema:mqtt:command:v1",
+    "command-result-v1.json": "urn:algaguard:schema:mqtt:command-result:v1",
+    "ota-notification-v1.json": "urn:algaguard:schema:mqtt:ota-notification:v1",
+    "ota-status-v1.json": "urn:algaguard:schema:mqtt:ota-status:v1"
+  },
+  "invalid": {
+    "missing-device-id.invalid.json": {
+      "schema": "urn:algaguard:schema:mqtt:telemetry-batch:v1",
+      "expected": "required"
+    },
+    "invalid-sequence.invalid.json": {
+      "schema": "urn:algaguard:schema:mqtt:telemetry-batch:v1",
+      "expected": "pattern"
+    },
+    "invalid-ack-status.invalid.json": {
+      "schema": "urn:algaguard:schema:mqtt:telemetry-ack:v1",
+      "expected": "enum"
+    },
+    "battery-percent-out-of-range.invalid.json": {
+      "schema": "urn:algaguard:schema:mqtt:device-health:v1",
+      "expected": "maximum"
+    },
+    "missing-profile-version.invalid.json": {
+      "schema": "urn:algaguard:schema:mqtt:profile-configuration:v1",
+      "expected": "required"
+    },
+    "expired-command.invalid.json": {
+      "schema": "urn:algaguard:schema:mqtt:command:v1",
+      "expected": "COMMAND_EXPIRES_BEFORE_CREATED"
+    },
+    "invalid-sha256.invalid.json": {
+      "schema": "urn:algaguard:schema:mqtt:ota-notification:v1",
+      "expected": "pattern"
+    }
+  }
+}

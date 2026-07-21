@@ -1,0 +1,15 @@
+{
+  "schema": "urn:algaguard:schema:mqtt:device-status:v1",
+  "schemaVersion": "1.0.0",
+  "messageId": "5c12a5d4-d603-421d-8e17-4c022cf31001",
+  "deviceId": "AG-000001",
+  "sentAt": "2026-07-22T10:00:00Z",
+  "payload": {
+    "status": "ONLINE",
+    "reason": "MQTT_SESSION_ESTABLISHED",
+    "bootReason": "POWER_ON",
+    "firmwareVersion": "0.0.0-contract-demo",
+    "statusAt": "2026-07-22T10:00:00Z",
+    "sessionId": "12cbc245-8ef0-4e56-8f02-4a605b1ac501"
+  }
+}

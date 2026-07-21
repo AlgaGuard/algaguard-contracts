@@ -1,0 +1,32 @@
+{
+  "name": "@algaguard/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Versioned AlgaGuard MQTT, JSON Schema, OpenAPI, and AsyncAPI contracts.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "format": "prettier --write \"**/*.{json,jsonc,md,mjs,yaml,yml}\"",
+    "format:check": "prettier --check \"**/*.{json,jsonc,md,mjs,yaml,yml}\"",
+    "lint": "markdownlint-cli2 && spectral lint \"openapi/*.yaml\" --ruleset .spectral.yaml",
+    "validate:schemas": "node scripts/validate-schemas.mjs",
+    "validate:examples": "node scripts/validate-examples.mjs",
+    "validate:openapi": "node scripts/validate-openapi.mjs",
+    "validate:asyncapi": "node scripts/validate-asyncapi.mjs",
+    "validate:refs": "node scripts/validate-references.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "check:breaking": "node scripts/check-breaking-changes.mjs",
+    "check": "npm run format:check && npm run lint && npm run validate:schemas && npm run validate:examples && npm run validate:openapi && npm run validate:asyncapi && npm run validate:refs && npm test && npm run check:breaking"
+  },
+  "devDependencies": {
+    "@asyncapi/parser": "3.6.0",
+    "@stoplight/spectral-cli": "6.16.2",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "markdownlint-cli2": "0.23.1",
+    "prettier": "3.9.6",
+    "yaml": "2.9.0"
+  }
+}
