@@ -7,3 +7,10 @@ rules:
   operation-description: error
   operation-operationId: error
   operation-tags: error
+
+overrides:
+  - files:
+      - openapi/common-components-v1.yaml
+    rules:
+      oas3-api-servers: off
+      oas3-unused-component: off
