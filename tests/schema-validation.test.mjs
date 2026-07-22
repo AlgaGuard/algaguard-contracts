@@ -5,8 +5,8 @@ import { createAjv, loadSchemas } from '../scripts/lib/contract-tools.mjs';
 const schemas = loadSchemas();
 const ajv = createAjv();
 
-test('the repository contains the 18 planned versioned schemas', () => {
-  assert.equal(schemas.length, 18);
+test('the repository contains the 30 planned versioned schemas', () => {
+  assert.equal(schemas.length, 30);
 });
 
 for (const { relative, schema } of schemas) {

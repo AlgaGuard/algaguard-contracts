@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:websocket:device-health-updated:v1",
+  "title": "Device health updated realtime event v1",
+  "allOf": [
+    {
+      "$ref": "urn:algaguard:schema:websocket:realtime-envelope:v1"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "urn:algaguard:schema:websocket:device-health-updated:v1"
+        },
+        "eventType": {
+          "const": "device.health.updated"
+        },
+        "payload": {
+          "$ref": "urn:algaguard:schema:mqtt:device-health:v1#/allOf/1/properties/payload"
+        }
+      },
+      "required": ["deviceId"]
+    }
+  ]
+}

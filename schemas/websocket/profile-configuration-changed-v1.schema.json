@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:websocket:profile-configuration-changed:v1",
+  "title": "Profile configuration lifecycle realtime event v1",
+  "$defs": {
+    "appliedPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "configurationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "profileId": {
+          "$ref": "urn:algaguard:schema:common:profile-reference:v1#/$defs/profileId"
+        },
+        "profileVersion": {
+          "$ref": "urn:algaguard:schema:common:profile-reference:v1#/$defs/profileVersion"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["APPLIED", "REJECTED", "DEFERRED", "ALREADY_APPLIED"]
+        },
+        "appliedAt": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "validationErrors": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": {
+            "$ref": "urn:algaguard:schema:common:error-detail:v1"
+          }
+        }
+      },
+      "required": ["configurationId", "profileId", "profileVersion", "status"]
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "urn:algaguard:schema:websocket:realtime-envelope:v1"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "urn:algaguard:schema:websocket:profile-configuration-changed:v1"
+        }
+      },
+      "required": ["deviceId"]
+    },
+    {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "eventType": {
+              "const": "profile.configuration.changed"
+            },
+            "payload": {
+              "$ref": "urn:algaguard:schema:mqtt:profile-configuration:v1#/allOf/1/properties/payload"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "properties": {
+            "eventType": {
+              "const": "profile.configuration.applied"
+            },
+            "payload": {
+              "$ref": "#/$defs/appliedPayload"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

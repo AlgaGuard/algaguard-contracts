@@ -37,7 +37,7 @@ jobs:
         run: npm run validate:examples
       - name: Validate OpenAPI
         run: npm run validate:openapi
-      - name: Validate AsyncAPI
+      - name: Validate MQTT and WebSocket AsyncAPI
         run: npm run validate:asyncapi
       - name: Validate references
         run: npm run validate:refs

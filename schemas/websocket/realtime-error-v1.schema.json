@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:websocket:realtime-error:v1",
+  "title": "Realtime protocol error v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "urn:algaguard:schema:websocket:realtime-error:v1"
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "errorId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "requestId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "code": {
+      "type": "string",
+      "enum": [
+        "UNAUTHORIZED_SUBSCRIPTION",
+        "INVALID_SUBSCRIPTION",
+        "TICKET_INVALID",
+        "TICKET_EXPIRED",
+        "TOO_MANY_SUBSCRIPTIONS",
+        "MESSAGE_TOO_LARGE",
+        "RATE_LIMITED",
+        "INTERNAL_ERROR"
+      ]
+    },
+    "message": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "retryable": {
+      "type": "boolean"
+    },
+    "details": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {
+        "$ref": "urn:algaguard:schema:common:error-detail:v1"
+      }
+    },
+    "extensions": {
+      "$ref": "urn:algaguard:schema:common:extension-map:v1"
+    }
+  },
+  "required": ["schema", "schemaVersion", "errorId", "code", "message", "occurredAt", "retryable"]
+}

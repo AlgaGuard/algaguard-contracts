@@ -10,7 +10,18 @@
     "command-v1.json": "urn:algaguard:schema:mqtt:command:v1",
     "command-result-v1.json": "urn:algaguard:schema:mqtt:command-result:v1",
     "ota-notification-v1.json": "urn:algaguard:schema:mqtt:ota-notification:v1",
-    "ota-status-v1.json": "urn:algaguard:schema:mqtt:ota-status:v1"
+    "ota-status-v1.json": "urn:algaguard:schema:mqtt:ota-status:v1",
+    "websocket-subscribe-v1.json": "urn:algaguard:schema:websocket:client-subscribe:v1",
+    "websocket-unsubscribe-v1.json": "urn:algaguard:schema:websocket:client-unsubscribe:v1",
+    "websocket-subscription-ack-v1.json": "urn:algaguard:schema:websocket:subscription-ack:v1",
+    "websocket-unauthorized-subscription-error-v1.json": "urn:algaguard:schema:websocket:realtime-error:v1",
+    "websocket-telemetry-updated-v1.json": "urn:algaguard:schema:websocket:telemetry-updated:v1",
+    "websocket-device-status-changed-v1.json": "urn:algaguard:schema:websocket:device-status-changed:v1",
+    "websocket-alert-updated-v1.json": "urn:algaguard:schema:websocket:alert-updated:v1",
+    "websocket-command-status-changed-v1.json": "urn:algaguard:schema:websocket:command-status-changed:v1",
+    "websocket-profile-configuration-applied-v1.json": "urn:algaguard:schema:websocket:profile-configuration-changed:v1",
+    "websocket-ota-status-changed-v1.json": "urn:algaguard:schema:websocket:ota-status-changed:v1",
+    "websocket-system-notification-v1.json": "urn:algaguard:schema:websocket:realtime-envelope:v1"
   },
   "invalid": {
     "missing-device-id.invalid.json": {
@@ -39,6 +50,22 @@
     },
     "invalid-sha256.invalid.json": {
       "schema": "urn:algaguard:schema:mqtt:ota-notification:v1",
+      "expected": "pattern"
+    },
+    "websocket-invalid-event-type.invalid.json": {
+      "schema": "urn:algaguard:schema:websocket:realtime-envelope:v1",
+      "expected": "enum"
+    },
+    "websocket-invalid-subscription-resource.invalid.json": {
+      "schema": "urn:algaguard:schema:websocket:client-subscribe:v1",
+      "expected": "enum"
+    },
+    "websocket-missing-event-id.invalid.json": {
+      "schema": "urn:algaguard:schema:websocket:telemetry-updated:v1",
+      "expected": "required"
+    },
+    "websocket-invalid-utc-timestamp.invalid.json": {
+      "schema": "urn:algaguard:schema:websocket:realtime-envelope:v1",
       "expected": "pattern"
     }
   }

@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:websocket:client-subscribe:v1",
+  "title": "Realtime client subscribe request v1",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "subscription": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "resourceType": {
+          "type": "string",
+          "enum": ["organization", "device", "current-user"]
+        },
+        "resourceId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "events": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "urn:algaguard:schema:websocket:realtime-envelope:v1#/$defs/eventType"
+          }
+        }
+      },
+      "required": ["resourceType", "events"],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "resourceType": {
+                "enum": ["organization", "device"]
+              }
+            },
+            "required": ["resourceType"]
+          },
+          "then": {
+            "required": ["resourceId"]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "resourceType": {
+                "const": "current-user"
+              }
+            },
+            "required": ["resourceType"]
+          },
+          "then": {
+            "not": {
+              "required": ["resourceId"]
+            }
+          }
+        }
+      ]
+    }
+  },
+  "properties": {
+    "schema": {
+      "const": "algaguard.websocket.subscribe"
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "requestId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "subscriptions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/subscription"
+      }
+    },
+    "extensions": {
+      "$ref": "urn:algaguard:schema:common:extension-map:v1"
+    }
+  },
+  "required": ["schema", "schemaVersion", "requestId", "subscriptions"]
+}

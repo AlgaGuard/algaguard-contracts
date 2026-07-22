@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:websocket:alert-updated:v1",
+  "title": "Alert lifecycle realtime event v1",
+  "allOf": [
+    {
+      "$ref": "urn:algaguard:schema:websocket:realtime-envelope:v1"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "urn:algaguard:schema:websocket:alert-updated:v1"
+        },
+        "eventType": {
+          "enum": ["alert.created", "alert.updated"]
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "alertId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "alertType": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_]{2,63}$"
+            },
+            "severity": {
+              "type": "string",
+              "enum": ["INFORMATION", "WARNING", "CRITICAL"]
+            },
+            "status": {
+              "type": "string",
+              "enum": ["OPEN", "ACKNOWLEDGED", "RESOLVED"]
+            },
+            "message": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "profile": {
+              "$ref": "urn:algaguard:schema:common:profile-reference:v1"
+            },
+            "updatedAt": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            },
+            "extensions": {
+              "$ref": "urn:algaguard:schema:common:extension-map:v1"
+            }
+          },
+          "required": ["alertId", "alertType", "severity", "status", "message", "updatedAt"]
+        }
+      },
+      "required": ["organizationId"]
+    }
+  ]
+}
