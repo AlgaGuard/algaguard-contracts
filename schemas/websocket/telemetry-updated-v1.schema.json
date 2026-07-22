@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:websocket:telemetry-updated:v1",
+  "title": "Telemetry updated realtime event v1",
+  "allOf": [
+    {
+      "$ref": "urn:algaguard:schema:websocket:realtime-envelope:v1"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "urn:algaguard:schema:websocket:telemetry-updated:v1"
+        },
+        "eventType": {
+          "const": "telemetry.updated"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sample": {
+              "$ref": "urn:algaguard:schema:mqtt:telemetry-sample:v1"
+            },
+            "activeProfile": {
+              "$ref": "urn:algaguard:schema:common:profile-reference:v1"
+            }
+          },
+          "required": ["sample", "activeProfile"]
+        }
+      },
+      "required": ["deviceId", "sequence"]
+    }
+  ]
+}

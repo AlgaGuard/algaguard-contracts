@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:websocket:command-status-changed:v1",
+  "title": "Command status changed realtime event v1",
+  "description": "Reports command status only. Commands are submitted through authorized HTTPS REST endpoints, never through WebSocket messages.",
+  "allOf": [
+    {
+      "$ref": "urn:algaguard:schema:websocket:realtime-envelope:v1"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "urn:algaguard:schema:websocket:command-status-changed:v1"
+        },
+        "eventType": {
+          "const": "command.status.changed"
+        },
+        "payload": {
+          "$ref": "urn:algaguard:schema:mqtt:command-result:v1#/allOf/1/properties/payload"
+        }
+      },
+      "required": ["deviceId", "correlationId"]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "schema": "urn:algaguard:schema:websocket:realtime-error:v1",
+  "schemaVersion": "1.0.0",
+  "errorId": "40000000-0000-4000-8000-000000000001",
+  "requestId": "10000000-0000-4000-8000-000000000003",
+  "code": "UNAUTHORIZED_SUBSCRIPTION",
+  "message": "The current user is not authorized for the requested resource.",
+  "occurredAt": "2026-07-22T08:00:01Z",
+  "retryable": false
+}

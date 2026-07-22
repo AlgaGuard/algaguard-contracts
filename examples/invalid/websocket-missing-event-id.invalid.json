@@ -1,0 +1,23 @@
+{
+  "schema": "urn:algaguard:schema:websocket:telemetry-updated:v1",
+  "schemaVersion": "1.0.0",
+  "eventType": "telemetry.updated",
+  "occurredAt": "2026-07-22T08:00:10Z",
+  "sequence": "43",
+  "deviceId": "20000000-0000-4000-8000-000000000001",
+  "payload": {
+    "sample": {
+      "sequence": "43",
+      "observedAt": "2026-07-22T08:00:10Z",
+      "timestampQuality": "NTP_SYNCED",
+      "uptimeMs": "43000",
+      "values": {
+        "ph": 7.2
+      }
+    },
+    "activeProfile": {
+      "profileId": "70000000-0000-4000-8000-000000000001",
+      "profileVersion": "1.0.0"
+    }
+  }
+}

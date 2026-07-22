@@ -1,0 +1,16 @@
+{
+  "schema": "urn:algaguard:schema:websocket:profile-configuration-changed:v1",
+  "schemaVersion": "1.0.0",
+  "eventId": "50000000-0000-4000-8000-000000000005",
+  "eventType": "profile.configuration.applied",
+  "occurredAt": "2026-07-22T08:00:06Z",
+  "organizationId": "60000000-0000-4000-8000-000000000001",
+  "deviceId": "20000000-0000-4000-8000-000000000001",
+  "payload": {
+    "configurationId": "c0000000-0000-4000-8000-000000000001",
+    "profileId": "70000000-0000-4000-8000-000000000001",
+    "profileVersion": "1.0.0",
+    "status": "APPLIED",
+    "appliedAt": "2026-07-22T08:00:06Z"
+  }
+}

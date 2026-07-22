@@ -1,0 +1,17 @@
+{
+  "schema": "urn:algaguard:schema:websocket:alert-updated:v1",
+  "schemaVersion": "1.0.0",
+  "eventId": "50000000-0000-4000-8000-000000000003",
+  "eventType": "alert.updated",
+  "occurredAt": "2026-07-22T08:00:04Z",
+  "organizationId": "60000000-0000-4000-8000-000000000001",
+  "deviceId": "20000000-0000-4000-8000-000000000001",
+  "payload": {
+    "alertId": "90000000-0000-4000-8000-000000000001",
+    "alertType": "DEVICE_OFFLINE",
+    "severity": "WARNING",
+    "status": "ACKNOWLEDGED",
+    "message": "A user acknowledged the device connectivity alert.",
+    "updatedAt": "2026-07-22T08:00:04Z"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "algaguard.websocket.subscribe",
+  "schemaVersion": "1.0.0",
+  "requestId": "10000000-0000-4000-8000-000000000001",
+  "subscriptions": [
+    {
+      "resourceType": "device",
+      "resourceId": "20000000-0000-4000-8000-000000000001",
+      "events": ["telemetry.updated", "device.health.updated", "device.status.changed"]
+    },
+    {
+      "resourceType": "current-user",
+      "events": ["system.notification"]
+    }
+  ]
+}

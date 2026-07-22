@@ -2,7 +2,7 @@
   "name": "@algaguard/contracts",
   "version": "0.1.0",
   "private": true,
-  "description": "Versioned AlgaGuard MQTT, JSON Schema, OpenAPI, and AsyncAPI contracts.",
+  "description": "Versioned AlgaGuard HTTP, MQTT, and WebSocket contracts.",
   "type": "module",
   "engines": {
     "node": ">=22"

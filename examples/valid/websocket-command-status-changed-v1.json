@@ -1,0 +1,16 @@
+{
+  "schema": "urn:algaguard:schema:websocket:command-status-changed:v1",
+  "schemaVersion": "1.0.0",
+  "eventId": "50000000-0000-4000-8000-000000000004",
+  "eventType": "command.status.changed",
+  "occurredAt": "2026-07-22T08:00:05Z",
+  "correlationId": "a0000000-0000-4000-8000-000000000001",
+  "organizationId": "60000000-0000-4000-8000-000000000001",
+  "deviceId": "20000000-0000-4000-8000-000000000001",
+  "payload": {
+    "commandId": "b0000000-0000-4000-8000-000000000001",
+    "status": "SUCCEEDED",
+    "reportedAt": "2026-07-22T08:00:05Z",
+    "progressPercent": 100
+  }
+}

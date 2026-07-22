@@ -1,0 +1,15 @@
+{
+  "schema": "urn:algaguard:schema:websocket:subscription-ack:v1",
+  "schemaVersion": "1.0.0",
+  "requestId": "10000000-0000-4000-8000-000000000001",
+  "acknowledgedAt": "2026-07-22T08:00:00Z",
+  "accepted": [
+    {
+      "subscriptionId": "30000000-0000-4000-8000-000000000001",
+      "resourceType": "device",
+      "resourceId": "20000000-0000-4000-8000-000000000001",
+      "events": ["telemetry.updated", "device.health.updated", "device.status.changed"]
+    }
+  ],
+  "rejected": []
+}

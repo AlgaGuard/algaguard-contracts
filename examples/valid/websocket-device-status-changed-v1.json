@@ -1,0 +1,15 @@
+{
+  "schema": "urn:algaguard:schema:websocket:device-status-changed:v1",
+  "schemaVersion": "1.0.0",
+  "eventId": "50000000-0000-4000-8000-000000000002",
+  "eventType": "device.status.changed",
+  "occurredAt": "2026-07-22T08:00:03Z",
+  "organizationId": "60000000-0000-4000-8000-000000000001",
+  "deviceId": "20000000-0000-4000-8000-000000000001",
+  "payload": {
+    "status": "ONLINE",
+    "firmwareVersion": "0.1.0",
+    "statusAt": "2026-07-22T08:00:03Z",
+    "sessionId": "80000000-0000-4000-8000-000000000001"
+  }
+}

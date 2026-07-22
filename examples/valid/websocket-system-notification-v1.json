@@ -1,0 +1,12 @@
+{
+  "schema": "urn:algaguard:schema:websocket:realtime-envelope:v1",
+  "schemaVersion": "1.0.0",
+  "eventId": "50000000-0000-4000-8000-000000000007",
+  "eventType": "system.notification",
+  "occurredAt": "2026-07-22T08:00:08Z",
+  "organizationId": "60000000-0000-4000-8000-000000000001",
+  "payload": {
+    "code": "PLANNED_MAINTENANCE",
+    "message": "A planned maintenance window has been scheduled."
+  }
+}

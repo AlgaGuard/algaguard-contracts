@@ -30,4 +30,21 @@ All schemas use JSON Schema Draft 2020-12 and stable URN identifiers. Files endi
 | [`ota-notification-v1`](../schemas/mqtt/ota-notification-v1.schema.json)                   | Signed, expiring firmware release notification                  |
 | [`ota-status-v1`](../schemas/mqtt/ota-status-v1.schema.json)                               | Device download, verification, installation, and rollback state |
 
-The [MQTT policy](mqtt-topics.md), [OpenAPI files](../openapi/), and [AsyncAPI file](../asyncapi/algaguard-mqtt-v1.yaml) are part of the same reviewed contract surface.
+## WebSocket schemas
+
+| Contract                                                                                                | Direction and purpose                                                                              |
+| ------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| [`realtime-envelope-v1`](../schemas/websocket/realtime-envelope-v1.schema.json)                         | Server event identity, type, UTC occurrence time, resource context, optional ordering, and payload |
+| [`client-subscribe-v1`](../schemas/websocket/client-subscribe-v1.schema.json)                           | Client request for authorized organization, device, or current-user event delivery                 |
+| [`client-unsubscribe-v1`](../schemas/websocket/client-unsubscribe-v1.schema.json)                       | Client removal of connection-scoped subscriptions                                                  |
+| [`subscription-ack-v1`](../schemas/websocket/subscription-ack-v1.schema.json)                           | Server acceptance and rejection results for a subscription request                                 |
+| [`realtime-error-v1`](../schemas/websocket/realtime-error-v1.schema.json)                               | Bounded authentication, authorization, validation, capacity, and service errors                    |
+| [`telemetry-updated-v1`](../schemas/websocket/telemetry-updated-v1.schema.json)                         | Latest accepted telemetry update                                                                   |
+| [`device-health-updated-v1`](../schemas/websocket/device-health-updated-v1.schema.json)                 | Validated device health update                                                                     |
+| [`device-status-changed-v1`](../schemas/websocket/device-status-changed-v1.schema.json)                 | Device lifecycle status change                                                                     |
+| [`alert-updated-v1`](../schemas/websocket/alert-updated-v1.schema.json)                                 | Alert creation and lifecycle update                                                                |
+| [`command-status-changed-v1`](../schemas/websocket/command-status-changed-v1.schema.json)               | Status of a command submitted through HTTPS REST                                                   |
+| [`profile-configuration-changed-v1`](../schemas/websocket/profile-configuration-changed-v1.schema.json) | Profile configuration change or device application result                                          |
+| [`ota-status-changed-v1`](../schemas/websocket/ota-status-changed-v1.schema.json)                       | OTA rollout and device status update                                                               |
+
+The [MQTT policy](mqtt-topics.md), [WebSocket protocol](websocket-protocol.md), [OpenAPI files](../openapi/), [MQTT AsyncAPI](../asyncapi/algaguard-mqtt-v1.yaml), and [WebSocket AsyncAPI](../asyncapi/algaguard-websocket-v1.yaml) are part of the same reviewed contract surface.

@@ -1,0 +1,266 @@
+asyncapi: 3.1.0
+info:
+  title: AlgaGuard Realtime WebSocket API
+  version: 1.0.0
+  description: >-
+    Realtime Service perspective for portable RFC 6455 WebSocket delivery. The WSS URL is a placeholder,
+    the real product domain and operational limits are TBD, and authoritative recovery uses HTTPS APIs.
+servers:
+  production:
+    host: api.algaguard.example
+    pathname: /realtime
+    protocol: wss
+    description: Placeholder wss://api.algaguard.example/realtime endpoint; the real portable domain is TBD.
+    security:
+      - $ref: '#/components/securitySchemes/oneTimeTicket'
+channels:
+  clientMessages:
+    address: /realtime
+    description: Authenticated client control messages after the one-time ticket has been consumed.
+    messages:
+      subscribe:
+        $ref: '#/components/messages/subscribe'
+      unsubscribe:
+        $ref: '#/components/messages/unsubscribe'
+      ping:
+        $ref: '#/components/messages/ping'
+  serverMessages:
+    address: /realtime
+    description: Non-durable server events, protocol acknowledgements, errors, and heartbeat responses.
+    messages:
+      subscriptionAck:
+        $ref: '#/components/messages/subscriptionAck'
+      realtimeError:
+        $ref: '#/components/messages/realtimeError'
+      pong:
+        $ref: '#/components/messages/pong'
+      telemetryUpdated:
+        $ref: '#/components/messages/telemetryUpdated'
+      deviceHealthUpdated:
+        $ref: '#/components/messages/deviceHealthUpdated'
+      deviceStatusChanged:
+        $ref: '#/components/messages/deviceStatusChanged'
+      alertUpdated:
+        $ref: '#/components/messages/alertUpdated'
+      commandStatusChanged:
+        $ref: '#/components/messages/commandStatusChanged'
+      profileConfigurationChanged:
+        $ref: '#/components/messages/profileConfigurationChanged'
+      otaStatusChanged:
+        $ref: '#/components/messages/otaStatusChanged'
+      systemNotification:
+        $ref: '#/components/messages/systemNotification'
+operations:
+  receiveClientMessages:
+    action: receive
+    summary: Receive authenticated control messages
+    description: >-
+      The Realtime Service receives subscribe, unsubscribe, and ping messages. It asks the Access Service
+      to authorize every requested subscription and removes active subscriptions when access is revoked.
+    channel:
+      $ref: '#/channels/clientMessages'
+    messages:
+      - $ref: '#/channels/clientMessages/messages/subscribe'
+      - $ref: '#/channels/clientMessages/messages/unsubscribe'
+      - $ref: '#/channels/clientMessages/messages/ping'
+  sendServerMessages:
+    action: send
+    summary: Send non-durable realtime events and protocol responses
+    description: >-
+      Redis Pub/Sub supplies live fan-out only. After a disconnect, clients obtain a new ticket, reconnect,
+      recover authoritative state over HTTPS, and resubscribe. Commands are submitted through HTTPS REST.
+    channel:
+      $ref: '#/channels/serverMessages'
+    messages:
+      - $ref: '#/channels/serverMessages/messages/subscriptionAck'
+      - $ref: '#/channels/serverMessages/messages/realtimeError'
+      - $ref: '#/channels/serverMessages/messages/pong'
+      - $ref: '#/channels/serverMessages/messages/telemetryUpdated'
+      - $ref: '#/channels/serverMessages/messages/deviceHealthUpdated'
+      - $ref: '#/channels/serverMessages/messages/deviceStatusChanged'
+      - $ref: '#/channels/serverMessages/messages/alertUpdated'
+      - $ref: '#/channels/serverMessages/messages/commandStatusChanged'
+      - $ref: '#/channels/serverMessages/messages/profileConfigurationChanged'
+      - $ref: '#/channels/serverMessages/messages/otaStatusChanged'
+      - $ref: '#/channels/serverMessages/messages/systemNotification'
+components:
+  securitySchemes:
+    oneTimeTicket:
+      type: httpApiKey
+      name: ticket
+      in: query
+      description: >-
+        Short-lived, one-time WebSocket ticket issued by the API Gateway over authenticated HTTPS. It is not
+        a Keycloak access token, must be consumed once, and must not be logged.
+  messages:
+    subscribe:
+      name: subscribeV1
+      title: Subscribe request v1
+      contentType: application/json
+      payload:
+        $ref: '../schemas/websocket/client-subscribe-v1.schema.json'
+      examples:
+        - name: authorizedSubscriptionRequest
+          payload:
+            $ref: '../examples/valid/websocket-subscribe-v1.json'
+    unsubscribe:
+      name: unsubscribeV1
+      title: Unsubscribe request v1
+      contentType: application/json
+      payload:
+        $ref: '../schemas/websocket/client-unsubscribe-v1.schema.json'
+      examples:
+        - name: subscriptionRemovalRequest
+          payload:
+            $ref: '../examples/valid/websocket-unsubscribe-v1.json'
+    ping:
+      name: pingV1
+      title: Client heartbeat ping v1
+      contentType: application/json
+      payload:
+        type: object
+        additionalProperties: false
+        properties:
+          schema:
+            const: algaguard.websocket.ping
+          schemaVersion:
+            const: 1.0.0
+          requestId:
+            type: string
+            format: uuid
+          sentAt:
+            type: string
+            format: date-time
+            pattern: Z$
+        required:
+          - schema
+          - schemaVersion
+          - requestId
+          - sentAt
+    subscriptionAck:
+      name: subscriptionAckV1
+      title: Subscription acknowledgement v1
+      contentType: application/json
+      payload:
+        $ref: '../schemas/websocket/subscription-ack-v1.schema.json'
+      examples:
+        - name: acceptedSubscription
+          payload:
+            $ref: '../examples/valid/websocket-subscription-ack-v1.json'
+    realtimeError:
+      name: realtimeErrorV1
+      title: Realtime protocol error v1
+      contentType: application/json
+      payload:
+        $ref: '../schemas/websocket/realtime-error-v1.schema.json'
+      examples:
+        - name: unauthorizedSubscription
+          payload:
+            $ref: '../examples/valid/websocket-unauthorized-subscription-error-v1.json'
+    pong:
+      name: pongV1
+      title: Server heartbeat response v1
+      contentType: application/json
+      payload:
+        type: object
+        additionalProperties: false
+        properties:
+          schema:
+            const: algaguard.websocket.pong
+          schemaVersion:
+            const: 1.0.0
+          requestId:
+            type: string
+            format: uuid
+          receivedAt:
+            type: string
+            format: date-time
+            pattern: Z$
+        required:
+          - schema
+          - schemaVersion
+          - requestId
+          - receivedAt
+    telemetryUpdated:
+      name: telemetryUpdatedV1
+      title: Telemetry updated event v1
+      contentType: application/json
+      payload:
+        $ref: '../schemas/websocket/telemetry-updated-v1.schema.json'
+      examples:
+        - name: latestTelemetry
+          payload:
+            $ref: '../examples/valid/websocket-telemetry-updated-v1.json'
+    deviceHealthUpdated:
+      name: deviceHealthUpdatedV1
+      title: Device health updated event v1
+      contentType: application/json
+      payload:
+        $ref: '../schemas/websocket/device-health-updated-v1.schema.json'
+    deviceStatusChanged:
+      name: deviceStatusChangedV1
+      title: Device status changed event v1
+      contentType: application/json
+      payload:
+        $ref: '../schemas/websocket/device-status-changed-v1.schema.json'
+      examples:
+        - name: onlineStatus
+          payload:
+            $ref: '../examples/valid/websocket-device-status-changed-v1.json'
+    alertUpdated:
+      name: alertUpdatedV1
+      title: Alert created or updated event v1
+      contentType: application/json
+      payload:
+        $ref: '../schemas/websocket/alert-updated-v1.schema.json'
+      examples:
+        - name: acknowledgedAlert
+          payload:
+            $ref: '../examples/valid/websocket-alert-updated-v1.json'
+    commandStatusChanged:
+      name: commandStatusChangedV1
+      title: Command status changed event v1
+      contentType: application/json
+      payload:
+        $ref: '../schemas/websocket/command-status-changed-v1.schema.json'
+      examples:
+        - name: completedCommand
+          payload:
+            $ref: '../examples/valid/websocket-command-status-changed-v1.json'
+    profileConfigurationChanged:
+      name: profileConfigurationChangedV1
+      title: Profile configuration changed or applied event v1
+      contentType: application/json
+      payload:
+        $ref: '../schemas/websocket/profile-configuration-changed-v1.schema.json'
+      examples:
+        - name: appliedConfiguration
+          payload:
+            $ref: '../examples/valid/websocket-profile-configuration-applied-v1.json'
+    otaStatusChanged:
+      name: otaStatusChangedV1
+      title: OTA status changed event v1
+      contentType: application/json
+      payload:
+        $ref: '../schemas/websocket/ota-status-changed-v1.schema.json'
+      examples:
+        - name: otaDownloadProgress
+          payload:
+            $ref: '../examples/valid/websocket-ota-status-changed-v1.json'
+    systemNotification:
+      name: systemNotificationV1
+      title: System notification event v1
+      contentType: application/json
+      payload:
+        allOf:
+          - $ref: '../schemas/websocket/realtime-envelope-v1.schema.json'
+          - type: object
+            properties:
+              schema:
+                const: urn:algaguard:schema:websocket:realtime-envelope:v1
+              eventType:
+                const: system.notification
+      examples:
+        - name: plannedMaintenance
+          payload:
+            $ref: '../examples/valid/websocket-system-notification-v1.json'

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:websocket:subscription-ack:v1",
+  "title": "Realtime subscription acknowledgement v1",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "acceptedSubscription": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "subscriptionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "resourceType": {
+          "type": "string",
+          "enum": ["organization", "device", "current-user"]
+        },
+        "resourceId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "events": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "urn:algaguard:schema:websocket:realtime-envelope:v1#/$defs/eventType"
+          }
+        }
+      },
+      "required": ["subscriptionId", "resourceType", "events"]
+    }
+  },
+  "properties": {
+    "schema": {
+      "const": "urn:algaguard:schema:websocket:subscription-ack:v1"
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "requestId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "acknowledgedAt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "accepted": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/acceptedSubscription"
+      }
+    },
+    "rejected": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:algaguard:schema:common:error-detail:v1"
+      }
+    },
+    "extensions": {
+      "$ref": "urn:algaguard:schema:common:extension-map:v1"
+    }
+  },
+  "required": ["schema", "schemaVersion", "requestId", "acknowledgedAt", "accepted", "rejected"]
+}

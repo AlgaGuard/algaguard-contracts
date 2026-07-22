@@ -1,0 +1,12 @@
+{
+  "schema": "algaguard.websocket.subscribe",
+  "schemaVersion": "1.0.0",
+  "requestId": "10000000-0000-4000-8000-000000000004",
+  "subscriptions": [
+    {
+      "resourceType": "tenant",
+      "resourceId": "60000000-0000-4000-8000-000000000001",
+      "events": ["telemetry.updated"]
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:websocket:realtime-envelope:v1",
+  "title": "Realtime server event envelope v1",
+  "description": "Portable server-to-client realtime event envelope. Sequence values use unsigned decimal strings for cross-language safety.",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "eventType": {
+      "type": "string",
+      "enum": [
+        "telemetry.updated",
+        "device.health.updated",
+        "device.status.changed",
+        "alert.created",
+        "alert.updated",
+        "command.status.changed",
+        "profile.configuration.changed",
+        "profile.configuration.applied",
+        "ota.status.changed",
+        "system.notification"
+      ]
+    },
+    "sequence": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]{0,19})$",
+      "maxLength": 20
+    }
+  },
+  "properties": {
+    "schema": {
+      "type": "string",
+      "pattern": "^urn:algaguard:schema:websocket:[a-z0-9-]+:v1$",
+      "maxLength": 96
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "eventId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "eventType": {
+      "$ref": "#/$defs/eventType"
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "sequence": {
+      "$ref": "#/$defs/sequence"
+    },
+    "correlationId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "organizationId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "deviceId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "payload": {
+      "type": "object"
+    },
+    "extensions": {
+      "$ref": "urn:algaguard:schema:common:extension-map:v1"
+    }
+  },
+  "required": ["schema", "schemaVersion", "eventId", "eventType", "occurredAt", "payload"]
+}
