@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:onboarding:ble-provisioning-result:v1",
+  "title": "BLE Wi-Fi provisioning result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "urn:algaguard:schema:onboarding:ble-provisioning-result:v1"
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "sessionId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "deviceId": {
+      "$ref": "urn:algaguard:schema:common:device-reference:v1#/$defs/deviceId"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["ACCEPTED", "CONNECTING", "CONNECTED", "FAILED"]
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "errorCode": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]{2,63}$"
+    }
+  },
+  "required": ["schema", "schemaVersion", "sessionId", "deviceId", "status", "occurredAt"],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "FAILED"
+          }
+        },
+        "required": ["status"]
+      },
+      "then": {
+        "required": ["errorCode"]
+      },
+      "else": {
+        "not": {
+          "required": ["errorCode"]
+        }
+      }
+    }
+  ]
+}

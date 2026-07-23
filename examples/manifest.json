@@ -1,5 +1,9 @@
 {
   "valid": {
+    "claim-qr-v1.json": "urn:algaguard:schema:onboarding:claim-qr:v1",
+    "bootstrap-session-v1.json": "urn:algaguard:schema:onboarding:bootstrap-session:v1",
+    "ble-provisioning-request-v1.json": "urn:algaguard:schema:onboarding:ble-provisioning-request:v1",
+    "ble-provisioning-result-v1.json": "urn:algaguard:schema:onboarding:ble-provisioning-result:v1",
     "telemetry-batch-v1.json": "urn:algaguard:schema:mqtt:telemetry-batch:v1",
     "telemetry-ack-v1.json": "urn:algaguard:schema:mqtt:telemetry-ack:v1",
     "device-health-v1.json": "urn:algaguard:schema:mqtt:device-health:v1",
@@ -24,6 +28,14 @@
     "websocket-system-notification-v1.json": "urn:algaguard:schema:websocket:realtime-envelope:v1"
   },
   "invalid": {
+    "claim-qr-contains-wifi.invalid.json": {
+      "schema": "urn:algaguard:schema:onboarding:claim-qr:v1",
+      "expected": "additionalProperties"
+    },
+    "bootstrap-session-expiry.invalid.json": {
+      "schema": "urn:algaguard:schema:onboarding:bootstrap-session:v1",
+      "expected": "BOOTSTRAP_EXPIRES_BEFORE_CREATED"
+    },
     "missing-device-id.invalid.json": {
       "schema": "urn:algaguard:schema:mqtt:telemetry-batch:v1",
       "expected": "required"

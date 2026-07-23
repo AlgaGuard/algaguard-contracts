@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:onboarding:claim-qr:v1",
+  "title": "Compact device claim QR payload v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "v": {
+      "type": "integer",
+      "const": 1
+    },
+    "d": {
+      "$ref": "urn:algaguard:schema:common:device-reference:v1#/$defs/deviceId"
+    },
+    "c": {
+      "type": "string",
+      "description": "Short-lived, one-time claim secret encoded with the unpadded base64url alphabet.",
+      "pattern": "^[A-Za-z0-9_-]{32,64}$"
+    },
+    "e": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "f": {
+      "type": "string",
+      "description": "Rate-limited fallback code for manual entry.",
+      "pattern": "^[A-HJ-NP-Z2-9]{8,12}$"
+    }
+  },
+  "required": ["v", "d", "c", "e", "f"]
+}

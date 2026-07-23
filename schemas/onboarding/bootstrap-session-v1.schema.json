@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:onboarding:bootstrap-session:v1",
+  "title": "Device bootstrap session v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "urn:algaguard:schema:onboarding:bootstrap-session:v1"
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "sessionId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "deviceId": {
+      "$ref": "urn:algaguard:schema:common:device-reference:v1#/$defs/deviceId"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "serviceUuid": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "sessionToken": {
+      "type": "string",
+      "description": "Short-lived, single-session proof encoded with the unpadded base64url alphabet.",
+      "pattern": "^[A-Za-z0-9_-]{32,96}$"
+    }
+  },
+  "required": [
+    "schema",
+    "schemaVersion",
+    "sessionId",
+    "deviceId",
+    "createdAt",
+    "expiresAt",
+    "serviceUuid",
+    "sessionToken"
+  ]
+}
