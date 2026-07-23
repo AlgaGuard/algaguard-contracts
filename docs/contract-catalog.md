@@ -10,6 +10,7 @@ All schemas use JSON Schema Draft 2020-12 and stable URN identifiers. Files endi
 | [`timestamp-quality-v1`](../schemas/common/timestamp-quality-v1.schema.json) | `NTP_SYNCED`, `RTC_HOLDOVER`, or `UNSYNCED`                                                                                        |
 | [`error-detail-v1`](../schemas/common/error-detail-v1.schema.json)           | Bounded machine and human error detail                                                                                             |
 | [`device-reference-v1`](../schemas/common/device-reference-v1.schema.json)   | Bounded `AG-000001` device identity                                                                                                |
+| [`device-identity-v1`](../schemas/common/device-identity-v1.schema.json)     | Trusted dual identity, organization, lifecycle, and ownership-version fields                                                       |
 | [`profile-reference-v1`](../schemas/common/profile-reference-v1.schema.json) | Immutable UUID and semantic profile version                                                                                        |
 | [`parameter-values-v1`](../schemas/common/parameter-values-v1.schema.json)   | Canonical telemetry names and transport units                                                                                      |
 | [`extension-map-v1`](../schemas/common/extension-map-v1.schema.json)         | Namespaced forward-compatible metadata                                                                                             |
@@ -49,6 +50,7 @@ All schemas use JSON Schema Draft 2020-12 and stable URN identifiers. Files endi
 | [`subscription-ack-v1`](../schemas/websocket/subscription-ack-v1.schema.json)                           | Server acceptance and rejection results for a subscription request                                 |
 | [`realtime-error-v1`](../schemas/websocket/realtime-error-v1.schema.json)                               | Bounded authentication, authorization, validation, capacity, and service errors                    |
 | [`telemetry-updated-v1`](../schemas/websocket/telemetry-updated-v1.schema.json)                         | Latest accepted telemetry update                                                                   |
+| [`telemetry-updated-v1-1`](../schemas/websocket/telemetry-updated-v1-1.schema.json)                     | Identity-aware telemetry update using the unchanged v1 connection and subscription protocol        |
 | [`device-health-updated-v1`](../schemas/websocket/device-health-updated-v1.schema.json)                 | Validated device health update                                                                     |
 | [`device-status-changed-v1`](../schemas/websocket/device-status-changed-v1.schema.json)                 | Device lifecycle status change                                                                     |
 | [`alert-updated-v1`](../schemas/websocket/alert-updated-v1.schema.json)                                 | Alert creation and lifecycle update                                                                |
@@ -56,4 +58,11 @@ All schemas use JSON Schema Draft 2020-12 and stable URN identifiers. Files endi
 | [`profile-configuration-changed-v1`](../schemas/websocket/profile-configuration-changed-v1.schema.json) | Profile configuration change or device application result                                          |
 | [`ota-status-changed-v1`](../schemas/websocket/ota-status-changed-v1.schema.json)                       | OTA rollout and device status update                                                               |
 
-The [MQTT policy](mqtt-topics.md), [WebSocket protocol](websocket-protocol.md), [OpenAPI files](../openapi/), [MQTT AsyncAPI](../asyncapi/algaguard-mqtt-v1.yaml), and [WebSocket AsyncAPI](../asyncapi/algaguard-websocket-v1.yaml) are part of the same reviewed contract surface.
+## Internal schemas
+
+| Contract                                                                           | Purpose                                                                                |
+| ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| [`device-context-v1`](../schemas/internal/device-context-v1.schema.json)           | Authenticated Device Service mapping response                                          |
+| [`telemetry-committed-v1`](../schemas/internal/telemetry-committed-v1.schema.json) | Post-commit telemetry event with trusted organization and dual device identity context |
+
+The [MQTT policy](mqtt-topics.md), [device identity context](device-identity-context.md), [WebSocket protocol](websocket-protocol.md), [OpenAPI files](../openapi/), [MQTT AsyncAPI](../asyncapi/algaguard-mqtt-v1.yaml), [WebSocket v1 AsyncAPI](../asyncapi/algaguard-websocket-v1.yaml), and [WebSocket v1.1 identity extension](../asyncapi/algaguard-websocket-v1-1.yaml) are part of the same reviewed contract surface.

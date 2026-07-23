@@ -1,0 +1,25 @@
+{
+  "schema": "urn:algaguard:schema:internal:telemetry-committed:v1",
+  "schemaVersion": "1.0.0",
+  "eventId": "50000000-0000-4000-8000-000000000001",
+  "eventType": "telemetry.committed",
+  "occurredAt": "2026-07-23T14:00:02Z",
+  "deviceUuid": "20000000-0000-4000-8000-000000000001",
+  "deviceId": "AG-000001",
+  "ownershipVersion": "1",
+  "batchId": "40000000-0000-4000-8000-000000000001",
+  "firstSequence": "42",
+  "lastSequence": "42",
+  "sampleCount": 1,
+  "payload": {
+    "sample": {
+      "sequence": "42",
+      "observedAt": "2026-07-23T14:00:01Z",
+      "timestampQuality": "NTP_SYNCED",
+      "uptimeMs": "42000",
+      "values": {
+        "ph": 7.1
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "urn:algaguard:schema:internal:device-context:v1",
+  "schemaVersion": "1.0.0",
+  "deviceUuid": "20000000-0000-4000-8000-000000000001",
+  "deviceId": "AG-000001",
+  "organizationId": "60000000-0000-4000-8000-000000000001",
+  "status": "ACTIVE",
+  "ownershipVersion": "1",
+  "resolvedAt": "2026-07-23T14:00:00Z",
+  "contextVersion": "1"
+}

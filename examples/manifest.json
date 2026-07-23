@@ -1,5 +1,9 @@
 {
   "valid": {
+    "device-identity-v1.json": "urn:algaguard:schema:common:device-identity:v1",
+    "internal-device-context-v1.json": "urn:algaguard:schema:internal:device-context:v1",
+    "internal-telemetry-committed-v1.json": "urn:algaguard:schema:internal:telemetry-committed:v1",
+    "websocket-telemetry-updated-v1-1.json": "urn:algaguard:schema:websocket:telemetry-updated:v1-1",
     "claim-qr-v1.json": "urn:algaguard:schema:onboarding:claim-qr:v1",
     "bootstrap-session-v1.json": "urn:algaguard:schema:onboarding:bootstrap-session:v1",
     "ble-provisioning-request-v1.json": "urn:algaguard:schema:onboarding:ble-provisioning-request:v1",
@@ -28,6 +32,22 @@
     "websocket-system-notification-v1.json": "urn:algaguard:schema:websocket:realtime-envelope:v1"
   },
   "invalid": {
+    "device-identity-invalid-device-id.invalid.json": {
+      "schema": "urn:algaguard:schema:common:device-identity:v1",
+      "expected": "pattern"
+    },
+    "device-context-invalid-uuid.invalid.json": {
+      "schema": "urn:algaguard:schema:internal:device-context:v1",
+      "expected": "format"
+    },
+    "telemetry-committed-missing-organization.invalid.json": {
+      "schema": "urn:algaguard:schema:internal:telemetry-committed:v1",
+      "expected": "required"
+    },
+    "websocket-telemetry-invalid-device-id.invalid.json": {
+      "schema": "urn:algaguard:schema:websocket:telemetry-updated:v1-1",
+      "expected": "pattern"
+    },
     "claim-qr-contains-wifi.invalid.json": {
       "schema": "urn:algaguard:schema:onboarding:claim-qr:v1",
       "expected": "additionalProperties"

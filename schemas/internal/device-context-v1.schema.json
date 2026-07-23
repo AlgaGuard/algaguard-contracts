@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:internal:device-context:v1",
+  "title": "Resolved internal device context v1",
+  "description": "Authenticated Device Service response. Organization identity is backend-owned and must never be accepted from a device payload.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "urn:algaguard:schema:internal:device-context:v1"
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "deviceUuid": {
+      "$ref": "urn:algaguard:schema:common:device-identity:v1#/$defs/deviceUuid"
+    },
+    "deviceId": {
+      "$ref": "urn:algaguard:schema:common:device-identity:v1#/$defs/deviceId"
+    },
+    "organizationId": {
+      "$ref": "urn:algaguard:schema:common:device-identity:v1#/$defs/organizationId"
+    },
+    "status": {
+      "$ref": "urn:algaguard:schema:common:device-identity:v1#/$defs/status"
+    },
+    "ownershipVersion": {
+      "$ref": "urn:algaguard:schema:common:device-identity:v1#/$defs/ownershipVersion"
+    },
+    "resolvedAt": {
+      "$ref": "urn:algaguard:schema:common:device-identity:v1#/$defs/resolvedAt"
+    },
+    "tankId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "contextVersion": {
+      "type": "string",
+      "pattern": "^[1-9][0-9]{0,19}$",
+      "maxLength": 20
+    }
+  },
+  "required": [
+    "schema",
+    "schemaVersion",
+    "deviceUuid",
+    "deviceId",
+    "organizationId",
+    "status",
+    "ownershipVersion",
+    "resolvedAt"
+  ]
+}

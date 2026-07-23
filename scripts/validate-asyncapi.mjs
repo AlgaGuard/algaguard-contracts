@@ -6,6 +6,7 @@ const schemasById = new Map(loadSchemas().map(({ schema }) => [schema.$id, schem
 const documents = [
   { name: 'algaguard-mqtt-v1.yaml', expectedChannels: 10, protocol: 'mqtts' },
   { name: 'algaguard-websocket-v1.yaml', expectedChannels: 2, protocol: 'wss' },
+  { name: 'algaguard-websocket-v1-1.yaml', expectedChannels: 2, protocol: 'wss' },
 ];
 
 for (const contract of documents) {
@@ -43,4 +44,4 @@ for (const contract of documents) {
     throw new Error(`${contract.name}: expected ${contract.protocol} server`);
 }
 
-console.log('Validated 2 AsyncAPI documents with 10 MQTT and 2 WebSocket channels.');
+console.log('Validated 3 AsyncAPI documents: MQTT v1 and WebSocket v1/v1.1.');

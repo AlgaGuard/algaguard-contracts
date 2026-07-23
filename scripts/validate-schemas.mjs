@@ -8,7 +8,7 @@ for (const { relative, schema } of schemas) {
   if (typeof schema.$id !== 'string' || !schema.$id.startsWith('urn:algaguard:schema:'))
     throw new Error(`${relative} has an invalid URN $id`);
   if (ids.has(schema.$id)) throw new Error(`Duplicate schema ID: ${schema.$id}`);
-  if (!/-v[1-9][0-9]*\.schema\.json$/.test(relative))
+  if (!/-v[1-9][0-9]*(?:-[1-9][0-9]*)?\.schema\.json$/.test(relative))
     throw new Error(`${relative} is not versioned`);
   ids.add(schema.$id);
 }

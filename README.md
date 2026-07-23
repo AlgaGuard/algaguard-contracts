@@ -12,6 +12,7 @@ The architecture and ownership decisions originate in [`algaguard-docs`](https:/
 - [OpenAPI 3.1 specifications](openapi/)
 - [AsyncAPI MQTT specification](asyncapi/algaguard-mqtt-v1.yaml)
 - [AsyncAPI WebSocket specification](asyncapi/algaguard-websocket-v1.yaml)
+- [WebSocket identity extension](asyncapi/algaguard-websocket-v1-1.yaml) and [trusted device context](docs/device-identity-context.md)
 - [WebSocket protocol](docs/websocket-protocol.md), [authentication](docs/websocket-authentication.md), [subscriptions](docs/websocket-subscriptions.md), [reconnection](docs/websocket-reconnection.md), and [delivery semantics](docs/realtime-delivery-semantics.md)
 - [Versioning](docs/versioning-policy.md), [compatibility](docs/compatibility-policy.md), and [deprecation](docs/deprecation-policy.md)
 
@@ -24,6 +25,8 @@ The pilot path is ESP32 to EMQX to MQTT Ingestion Service to Telemetry Service. 
 ## WebSocket summary
 
 Web and mobile clients obtain a short-lived, one-time WebSocket ticket from the API Gateway over authenticated HTTPS, connect using WSS, and request organization, device, or current-user subscriptions. The Access Service authorizes every subscription and revocation removes active access. Redis Pub/Sub provides non-durable live fan-out; clients recover authoritative state over HTTPS after reconnecting.
+
+Canonical `AG-######` identifiers remain the firmware and MQTT identity. Internal UUIDs are the REST, authorization, and WebSocket device resource identity. Organization context is added only by trusted backend services after Device Service resolution.
 
 WebSocket carries live status only. Commands always enter through authorized HTTPS REST, continue through the Command Service and MQTT, and report progress through `command.status.changed`. Exact connection, heartbeat, subscription, size, and rate limits are `TBD` pending implementation evidence.
 
