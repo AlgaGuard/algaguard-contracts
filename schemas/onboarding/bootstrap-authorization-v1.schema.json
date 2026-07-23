@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:onboarding:bootstrap-authorization:v1",
+  "title": "One-time device bootstrap authorization v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": { "const": "urn:algaguard:schema:onboarding:bootstrap-authorization:v1" },
+    "schemaVersion": { "const": "1.0.0" },
+    "authorizationId": { "type": "string", "format": "uuid" },
+    "deviceUuid": { "type": "string", "format": "uuid" },
+    "deviceId": { "$ref": "urn:algaguard:schema:common:device-reference:v1#/$defs/deviceId" },
+    "bootstrapToken": {
+      "type": "string",
+      "description": "Short-lived bearer material returned exactly once; servers persist only a cryptographic hash.",
+      "pattern": "^[A-Za-z0-9_-]{43,128}$"
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "attemptsRemaining": { "type": "integer", "minimum": 1, "maximum": 20 },
+    "consumedAt": { "type": ["string", "null"], "format": "date-time" }
+  },
+  "required": [
+    "schema",
+    "schemaVersion",
+    "authorizationId",
+    "deviceUuid",
+    "deviceId",
+    "bootstrapToken",
+    "createdAt",
+    "expiresAt",
+    "attemptsRemaining",
+    "consumedAt"
+  ]
+}

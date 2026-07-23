@@ -1,0 +1,12 @@
+{
+  "schema": "urn:algaguard:schema:onboarding:bootstrap-authorization:v1",
+  "schemaVersion": "1.0.0",
+  "authorizationId": "22222222-2222-4222-8222-222222222222",
+  "deviceUuid": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+  "deviceId": "AG-000001",
+  "bootstrapToken": "Qm9vdHN0cmFwLWF1dGhvcml6YXRpb24tc2ltdWxhdGlvbi10b2tlbg",
+  "createdAt": "2026-07-24T00:00:00Z",
+  "expiresAt": "2026-07-24T00:10:00Z",
+  "attemptsRemaining": 5,
+  "consumedAt": null
+}

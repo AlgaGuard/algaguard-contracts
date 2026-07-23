@@ -5,6 +5,7 @@ import { loadSchemas, repositoryRoot } from './lib/contract-tools.mjs';
 const schemasById = new Map(loadSchemas().map(({ schema }) => [schema.$id, schema]));
 const documents = [
   { name: 'algaguard-mqtt-v1.yaml', expectedChannels: 10, protocol: 'mqtts' },
+  { name: 'algaguard-device-credential-v1.yaml', expectedChannels: 2, protocol: 'mqtts' },
   { name: 'algaguard-websocket-v1.yaml', expectedChannels: 2, protocol: 'wss' },
   { name: 'algaguard-websocket-v1-1.yaml', expectedChannels: 2, protocol: 'wss' },
 ];
@@ -44,4 +45,6 @@ for (const contract of documents) {
     throw new Error(`${contract.name}: expected ${contract.protocol} server`);
 }
 
-console.log('Validated 3 AsyncAPI documents: MQTT v1 and WebSocket v1/v1.1.');
+console.log(
+  'Validated 4 AsyncAPI documents: MQTT v1, credential rotation v1, and WebSocket v1/v1.1.',
+);
