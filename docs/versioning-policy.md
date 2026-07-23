@@ -9,3 +9,5 @@ Published schema files are immutable. A change follows one of these paths:
 - Breaking field, type, unit, requiredness, enum, or semantic change: new versioned schema file and, for device wire changes, a new major topic path such as `v2`.
 
 Every contract PR updates examples, tests, documentation, the compatibility matrix, and `CHANGELOG.md`. Breaking changes additionally require an ADR, consumer inventory, migration/coexistence plan, and `breaking-change` label.
+
+For filenames that cannot safely use a semantic-version dot, a minor schema-document revision uses a hyphen, for example `telemetry-updated-v1-1.schema.json` for schema version `1.1.0`. The full URN remains authoritative. A schema-document minor revision does not change the MQTT topic major, WebSocket endpoint, subscription message, resource rule, or event type.

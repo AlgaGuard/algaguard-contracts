@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:internal:telemetry-committed:v1",
+  "title": "Trusted telemetry committed event v1",
+  "description": "Backend-only event published after authoritative telemetry commit with Device Service-resolved ownership context.",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "sequence": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]{0,19})$",
+      "maxLength": 20
+    }
+  },
+  "properties": {
+    "schema": {
+      "const": "urn:algaguard:schema:internal:telemetry-committed:v1"
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "eventId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "eventType": {
+      "const": "telemetry.committed"
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "organizationId": {
+      "$ref": "urn:algaguard:schema:common:device-identity:v1#/$defs/organizationId"
+    },
+    "deviceUuid": {
+      "$ref": "urn:algaguard:schema:common:device-identity:v1#/$defs/deviceUuid"
+    },
+    "deviceId": {
+      "$ref": "urn:algaguard:schema:common:device-identity:v1#/$defs/deviceId"
+    },
+    "ownershipVersion": {
+      "$ref": "urn:algaguard:schema:common:device-identity:v1#/$defs/ownershipVersion"
+    },
+    "batchId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "firstSequence": {
+      "$ref": "#/$defs/sequence"
+    },
+    "lastSequence": {
+      "$ref": "#/$defs/sequence"
+    },
+    "sampleCount": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 120
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sample": {
+          "$ref": "urn:algaguard:schema:mqtt:telemetry-sample:v1"
+        },
+        "activeProfile": {
+          "$ref": "urn:algaguard:schema:common:profile-reference:v1"
+        }
+      },
+      "required": ["sample"]
+    },
+    "correlationId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "extensions": {
+      "$ref": "urn:algaguard:schema:common:extension-map:v1"
+    }
+  },
+  "required": [
+    "schema",
+    "schemaVersion",
+    "eventId",
+    "eventType",
+    "occurredAt",
+    "organizationId",
+    "deviceUuid",
+    "deviceId",
+    "ownershipVersion",
+    "batchId",
+    "firstSequence",
+    "lastSequence",
+    "sampleCount",
+    "payload"
+  ]
+}

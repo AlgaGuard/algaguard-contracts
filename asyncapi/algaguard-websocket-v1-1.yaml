@@ -1,0 +1,72 @@
+asyncapi: 3.1.0
+info:
+  title: AlgaGuard Realtime WebSocket Identity Extension
+  version: 1.1.0
+  description: >-
+    Compatible WebSocket v1 identity extension. Connection tickets, subscribe messages, resource UUIDs,
+    event types, and recovery semantics remain those of v1. Telemetry events add explicit canonical and
+    internal device identities with backend-trusted organization context.
+servers:
+  production:
+    host: api.algaguard.example
+    pathname: /realtime
+    protocol: wss
+    description: Placeholder portable WSS endpoint; the product domain remains TBD.
+    security:
+      - $ref: '#/components/securitySchemes/oneTimeTicket'
+channels:
+  clientMessages:
+    address: /realtime
+    description: Existing WebSocket v1 authenticated control-message channel.
+    messages:
+      subscribe:
+        $ref: '#/components/messages/subscribe'
+  serverMessages:
+    address: /realtime
+    description: Non-durable telemetry delivery using trusted backend identity context.
+    messages:
+      telemetryUpdated:
+        $ref: '#/components/messages/telemetryUpdated'
+operations:
+  receiveSubscriptions:
+    action: receive
+    summary: Receive unchanged WebSocket v1 subscription requests
+    channel:
+      $ref: '#/channels/clientMessages'
+    messages:
+      - $ref: '#/channels/clientMessages/messages/subscribe'
+  sendTelemetryUpdates:
+    action: send
+    summary: Send telemetry updates with explicit dual device identity
+    channel:
+      $ref: '#/channels/serverMessages'
+    messages:
+      - $ref: '#/channels/serverMessages/messages/telemetryUpdated'
+components:
+  securitySchemes:
+    oneTimeTicket:
+      type: httpApiKey
+      name: ticket
+      in: query
+      description: Existing short-lived, single-use WebSocket ticket issued over authenticated HTTPS.
+  messages:
+    subscribe:
+      name: subscribeV1
+      title: Existing subscribe request v1
+      contentType: application/json
+      payload:
+        $ref: '../schemas/websocket/client-subscribe-v1.schema.json'
+      examples:
+        - name: deviceSubscription
+          payload:
+            $ref: '../examples/valid/websocket-subscribe-v1.json'
+    telemetryUpdated:
+      name: telemetryUpdatedV1_1
+      title: Telemetry updated event v1.1
+      contentType: application/json
+      payload:
+        $ref: '../schemas/websocket/telemetry-updated-v1-1.schema.json'
+      examples:
+        - name: trustedDeviceTelemetry
+          payload:
+            $ref: '../examples/valid/websocket-telemetry-updated-v1-1.json'

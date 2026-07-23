@@ -23,3 +23,7 @@ Compatibility is evaluated for producers and consumers in C/C++, TypeScript, Dar
 | Tighten connection limit          | may exceed new limit   | receives capacity error or disconnect   | operational and capacity review      |
 
 The automated breaking-change checker detects obvious structural changes only. It cannot prove semantic compatibility, generated-client behavior, packet-size safety, authorization correctness, reconnection safety, or scientific validity. Human review remains mandatory. WebSocket is non-durable; adding replay or a durable cursor requires a new contract and architecture review.
+
+## Device identity extension review
+
+The dual-identity addition is compatible by coexistence. Immutable WebSocket v1 connection, subscription, and telemetry documents remain available. Identity-aware producers and consumers use the new `telemetry-updated-v1-1` schema while retaining the `telemetry.updated` event type and UUID device subscription resource. The canonical `deviceId` remains unchanged on MQTT. This addition does not authorize sending v1.1 wire data while claiming the v1 schema URN.
