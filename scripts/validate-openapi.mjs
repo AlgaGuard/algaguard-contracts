@@ -6,7 +6,7 @@ import { listFiles, repositoryRoot } from './lib/contract-tools.mjs';
 
 const openApiRoot = path.join(repositoryRoot, 'openapi');
 const files = listFiles(openApiRoot, (file) => file.endsWith('.yaml'));
-if (files.length !== 7) throw new Error(`Expected 7 OpenAPI files, found ${files.length}`);
+if (files.length !== 8) throw new Error(`Expected 8 OpenAPI files, found ${files.length}`);
 
 for (const file of files) {
   const source = fs.readFileSync(file, 'utf8');

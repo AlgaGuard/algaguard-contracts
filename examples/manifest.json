@@ -6,6 +6,15 @@
     "websocket-telemetry-updated-v1-1.json": "urn:algaguard:schema:websocket:telemetry-updated:v1-1",
     "claim-qr-v1.json": "urn:algaguard:schema:onboarding:claim-qr:v1",
     "bootstrap-session-v1.json": "urn:algaguard:schema:onboarding:bootstrap-session:v1",
+    "bootstrap-authorization-v1.json": "urn:algaguard:schema:onboarding:bootstrap-authorization:v1",
+    "credential-csr-submission-v1.json": "urn:algaguard:schema:onboarding:credential-csr-submission:v1",
+    "credential-issuance-v1.json": "urn:algaguard:schema:onboarding:credential-issuance:v1",
+    "device-credential-metadata-v1.json": "urn:algaguard:schema:onboarding:device-credential-metadata:v1",
+    "credential-status-v1.json": "urn:algaguard:schema:onboarding:credential-status:v1",
+    "credential-rotation-request-v1.json": "urn:algaguard:schema:onboarding:credential-rotation-request:v1",
+    "credential-rotation-ack-v1.json": "urn:algaguard:schema:onboarding:credential-rotation-ack:v1",
+    "credential-revocation-status-v1.json": "urn:algaguard:schema:onboarding:credential-revocation-status:v1",
+    "credential-health-v1.json": "urn:algaguard:schema:onboarding:credential-health:v1",
     "ble-provisioning-request-v1.json": "urn:algaguard:schema:onboarding:ble-provisioning-request:v1",
     "ble-provisioning-result-v1.json": "urn:algaguard:schema:onboarding:ble-provisioning-result:v1",
     "telemetry-batch-v1.json": "urn:algaguard:schema:mqtt:telemetry-batch:v1",
@@ -55,6 +64,10 @@
     "bootstrap-session-expiry.invalid.json": {
       "schema": "urn:algaguard:schema:onboarding:bootstrap-session:v1",
       "expected": "BOOTSTRAP_EXPIRES_BEFORE_CREATED"
+    },
+    "credential-private-key.invalid.json": {
+      "schema": "urn:algaguard:schema:onboarding:credential-csr-submission:v1",
+      "expected": "additionalProperties"
     },
     "missing-device-id.invalid.json": {
       "schema": "urn:algaguard:schema:mqtt:telemetry-batch:v1",
