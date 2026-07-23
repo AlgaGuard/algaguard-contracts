@@ -30,6 +30,15 @@ All schemas use JSON Schema Draft 2020-12 and stable URN identifiers. Files endi
 | [`ota-notification-v1`](../schemas/mqtt/ota-notification-v1.schema.json)                   | Signed, expiring firmware release notification                  |
 | [`ota-status-v1`](../schemas/mqtt/ota-status-v1.schema.json)                               | Device download, verification, installation, and rollback state |
 
+## Onboarding schemas
+
+| Contract                                                                                       | Direction and purpose                                              |
+| ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| [`claim-qr-v1`](../schemas/onboarding/claim-qr-v1.schema.json)                                 | Compact OLED QR and manual fallback claim material                 |
+| [`bootstrap-session-v1`](../schemas/onboarding/bootstrap-session-v1.schema.json)               | HTTPS-issued short-lived, one-device BLE bootstrap session         |
+| [`ble-provisioning-request-v1`](../schemas/onboarding/ble-provisioning-request-v1.schema.json) | Protected-session Wi-Fi provisioning request from mobile to device |
+| [`ble-provisioning-result-v1`](../schemas/onboarding/ble-provisioning-result-v1.schema.json)   | Credential-free provisioning progress from device to mobile        |
+
 ## WebSocket schemas
 
 | Contract                                                                                                | Direction and purpose                                                                              |

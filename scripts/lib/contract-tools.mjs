@@ -185,6 +185,23 @@ export function semanticErrors(schemaId, data) {
   if (schemaId === 'urn:algaguard:schema:mqtt:ota-notification:v1') {
     return temporalErrors(data, 'publishedAt', 'expiresAt', 'OTA_EXPIRES_BEFORE_PUBLISHED');
   }
+  if (schemaId === 'urn:algaguard:schema:onboarding:bootstrap-session:v1') {
+    const createdAt = data.createdAt;
+    const expiresAt = data.expiresAt;
+    if (
+      typeof createdAt === 'string' &&
+      typeof expiresAt === 'string' &&
+      Date.parse(expiresAt) <= Date.parse(createdAt)
+    ) {
+      return [
+        semanticError(
+          'BOOTSTRAP_EXPIRES_BEFORE_CREATED',
+          '/expiresAt',
+          'must be later than createdAt',
+        ),
+      ];
+    }
+  }
   if (
     schemaId === 'urn:algaguard:schema:mqtt:profile-configuration-ack:v1' &&
     data.deviceId !== data.payload?.deviceId
