@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:onboarding:bootstrap-token-exchange-response:v1",
+  "title": "BLE session to CSR bootstrap token exchange response v1",
+  "description": "The bootstrap token is returned exactly once. Its server-side representation is a cryptographic hash and its trusted device, organization, ownership, claim-session, purpose, and contract-version bindings are derived by the service.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "urn:algaguard:schema:onboarding:bootstrap-token-exchange-response:v1"
+    },
+    "schemaVersion": { "const": "1.0.0" },
+    "bootstrapSessionId": { "type": "string", "format": "uuid" },
+    "deviceUuid": { "type": "string", "format": "uuid" },
+    "deviceId": {
+      "$ref": "urn:algaguard:schema:common:device-reference:v1#/$defs/deviceId"
+    },
+    "bootstrapToken": {
+      "type": "string",
+      "description": "Opaque bearer material limited to CSR issue. Servers persist only a cryptographic hash.",
+      "pattern": "^[A-Za-z0-9_-]{43,128}$"
+    },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "contractVersion": { "const": "1.0.0" }
+  },
+  "required": [
+    "schema",
+    "schemaVersion",
+    "bootstrapSessionId",
+    "deviceUuid",
+    "deviceId",
+    "bootstrapToken",
+    "expiresAt",
+    "contractVersion"
+  ]
+}

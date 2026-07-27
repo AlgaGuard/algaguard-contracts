@@ -6,6 +6,8 @@
     "websocket-telemetry-updated-v1-1.json": "urn:algaguard:schema:websocket:telemetry-updated:v1-1",
     "claim-qr-v1.json": "urn:algaguard:schema:onboarding:claim-qr:v1",
     "bootstrap-session-v1.json": "urn:algaguard:schema:onboarding:bootstrap-session:v1",
+    "bootstrap-token-exchange-request-v1.json": "urn:algaguard:schema:onboarding:bootstrap-token-exchange-request:v1",
+    "bootstrap-token-exchange-response-v1.json": "urn:algaguard:schema:onboarding:bootstrap-token-exchange-response:v1",
     "bootstrap-authorization-v1.json": "urn:algaguard:schema:onboarding:bootstrap-authorization:v1",
     "credential-csr-submission-v1.json": "urn:algaguard:schema:onboarding:credential-csr-submission:v1",
     "credential-issuance-v1.json": "urn:algaguard:schema:onboarding:credential-issuance:v1",
@@ -64,6 +66,10 @@
     "bootstrap-session-expiry.invalid.json": {
       "schema": "urn:algaguard:schema:onboarding:bootstrap-session:v1",
       "expected": "BOOTSTRAP_EXPIRES_BEFORE_CREATED"
+    },
+    "bootstrap-token-exchange-request-extra-authority.invalid.json": {
+      "schema": "urn:algaguard:schema:onboarding:bootstrap-token-exchange-request:v1",
+      "expected": "additionalProperties"
     },
     "credential-private-key.invalid.json": {
       "schema": "urn:algaguard:schema:onboarding:credential-csr-submission:v1",

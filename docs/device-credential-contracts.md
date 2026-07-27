@@ -12,6 +12,16 @@ The credential states are `PENDING`, `ACTIVE`, `ROTATING`, `REVOKED`, `EXPIRED`,
 
 The [device credential OpenAPI](../openapi/device-credential-service-v1.yaml) describes human, bootstrap, device-mTLS, and internal broker boundaries. The [credential rotation AsyncAPI](../asyncapi/algaguard-device-credential-v1.yaml) reuses the existing exact device command and command-result topics, so the MQTT topic major does not change.
 
+## Secure claim-to-CSR bootstrap bridge
+
+An authenticated mobile claim creates a short-lived BLE session. A device transfers that opaque session proof only through the protected BLE provisioning session and calls `POST /api/v1/device-credential-bootstrap/exchange` over TLS. The exchange atomically consumes the BLE session and returns a new, one-time, CSR-issue-only bootstrap token. The service derives device ID, device UUID, organization, ownership version, claim-session identity, purpose (`CSR_ISSUE`), and contract version from trusted stored state; firmware cannot choose those bindings.
+
+The existing `POST /api/v1/device-credential-bootstrap/issue` contract remains compatible. It accepts only the device-generated CSR and its one-time bootstrap bearer token, then returns public certificate material and CA chain. Implementations validate the CSR identity against the trusted authorization binding and consume the token only when issuance commits. They never accept, store, or return a device private key.
+
+The exchange request permits an optional `deviceId` exclusively to give an explicit `DEVICE_MISMATCH` denial. It deliberately rejects caller-supplied organization or device UUID authorization. Implementations use stable problem codes: `INVALID_SESSION_TOKEN`, `EXPIRED_SESSION_TOKEN`, `USED_SESSION_TOKEN`, `DEVICE_MISMATCH`, `DEVICE_INACTIVE`, `OWNERSHIP_VERSION_CHANGED`, `CLAIM_INVALID`, `BOOTSTRAP_TOKEN_INVALID`, `BOOTSTRAP_TOKEN_EXPIRED`, `BOOTSTRAP_TOKEN_USED`, `CSR_INVALID`, `CSR_IDENTITY_MISMATCH`, and `RATE_LIMITED`. Their HTTP mapping must not disclose arbitrary token existence beyond the service's safe error policy.
+
+The older `/v1/devices/{deviceId}/bootstrap` implementation path, where enabled, is a development-only compatibility path because it can return credential material without a CSR. Production-style device enrollment migrates to exchange plus CSR issue and must not use that route.
+
 ## Compatibility
 
 These files are new v1 documents and do not alter released schema IDs. Existing producers and consumers remain valid. Adoption requires security review because a client-certificate-only validity check is insufficient: implementations must validate stored credential state, fingerprint, SAN UUID, canonical device ID, and active device lifecycle.
