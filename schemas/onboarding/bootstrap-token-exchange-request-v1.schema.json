@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:onboarding:bootstrap-token-exchange-request:v1",
+  "title": "BLE session to CSR bootstrap token exchange request v1",
+  "description": "Exchanges a short-lived BLE session token over TLS. deviceId is optional and is used only to reject an explicit mismatch; the service derives all authorization bindings from its stored session state.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "urn:algaguard:schema:onboarding:bootstrap-token-exchange-request:v1"
+    },
+    "schemaVersion": { "const": "1.0.0" },
+    "sessionToken": {
+      "type": "string",
+      "description": "Opaque single-use BLE session proof. It is never placed in a URL, log, trace, metric, or audit payload.",
+      "pattern": "^[A-Za-z0-9_-]{32,96}$"
+    },
+    "deviceId": {
+      "$ref": "urn:algaguard:schema:common:device-reference:v1#/$defs/deviceId"
+    }
+  },
+  "required": ["schema", "schemaVersion", "sessionToken"]
+}

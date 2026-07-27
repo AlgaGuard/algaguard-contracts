@@ -1,0 +1,6 @@
+{
+  "schema": "urn:algaguard:schema:onboarding:bootstrap-token-exchange-request:v1",
+  "schemaVersion": "1.0.0",
+  "sessionToken": "session-token-placeholder-only-4xYz9AbCdEfGhIjKlMn",
+  "organizationId": "11111111-1111-4111-8111-111111111111"
+}
