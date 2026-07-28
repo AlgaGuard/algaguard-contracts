@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:onboarding:physical-session-handoff-redeem-request:v1",
+  "title": "Development-only physical session handoff redeem request v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "protocolVersion": { "const": 1 },
+    "deviceCode": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{43,128}$",
+      "description": "High-entropy one-time device proof. Never log or place in a URL."
+    }
+  },
+  "required": ["protocolVersion", "deviceCode"]
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:onboarding:physical-session-handoff-approve-request:v1",
+  "title": "Development-only physical session handoff approval request v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "protocolVersion": { "const": 1 },
+    "userCode": { "type": "string", "pattern": "^[A-HJ-NP-Z2-9 -]{6,20}$" },
+    "sessionId": { "type": "string", "format": "uuid" },
+    "deviceId": {
+      "$ref": "urn:algaguard:schema:common:device-reference:v1#/$defs/deviceId"
+    },
+    "sessionToken": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{32,96}$",
+      "description": "HTTPS-body-only secret. Never log, persist plaintext, or place in a URL."
+    }
+  },
+  "required": ["protocolVersion", "userCode", "sessionId", "deviceId", "sessionToken"]
+}

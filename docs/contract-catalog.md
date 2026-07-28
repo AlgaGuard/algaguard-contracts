@@ -33,12 +33,17 @@ All schemas use JSON Schema Draft 2020-12 and stable URN identifiers. Files endi
 
 ## Onboarding schemas
 
-| Contract                                                                                       | Direction and purpose                                              |
-| ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| [`claim-qr-v1`](../schemas/onboarding/claim-qr-v1.schema.json)                                 | Compact OLED QR and manual fallback claim material                 |
-| [`bootstrap-session-v1`](../schemas/onboarding/bootstrap-session-v1.schema.json)               | HTTPS-issued short-lived, one-device BLE bootstrap session         |
-| [`ble-provisioning-request-v1`](../schemas/onboarding/ble-provisioning-request-v1.schema.json) | Protected-session Wi-Fi provisioning request from mobile to device |
-| [`ble-provisioning-result-v1`](../schemas/onboarding/ble-provisioning-result-v1.schema.json)   | Credential-free provisioning progress from device to mobile        |
+| Contract                                                                                                                       | Direction and purpose                                              |
+| ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| [`claim-qr-v1`](../schemas/onboarding/claim-qr-v1.schema.json)                                                                 | Compact OLED QR and manual fallback claim material                 |
+| [`bootstrap-session-v1`](../schemas/onboarding/bootstrap-session-v1.schema.json)                                               | HTTPS-issued short-lived, one-device BLE bootstrap session         |
+| [`ble-provisioning-request-v1`](../schemas/onboarding/ble-provisioning-request-v1.schema.json)                                 | Protected-session Wi-Fi provisioning request from mobile to device |
+| [`ble-provisioning-result-v1`](../schemas/onboarding/ble-provisioning-result-v1.schema.json)                                   | Credential-free provisioning progress from device to mobile        |
+| [`physical-session-handoff-start-request-v1`](../schemas/onboarding/physical-session-handoff-start-request-v1.schema.json)     | Development-only local handoff start binding                       |
+| [`physical-session-handoff-start-response-v1`](../schemas/onboarding/physical-session-handoff-start-response-v1.schema.json)   | One-time device and user approval codes                            |
+| [`physical-session-handoff-approve-request-v1`](../schemas/onboarding/physical-session-handoff-approve-request-v1.schema.json) | Authenticated mobile approval with session proof                   |
+| [`physical-session-handoff-redeem-request-v1`](../schemas/onboarding/physical-session-handoff-redeem-request-v1.schema.json)   | Device-code redemption request                                     |
+| [`physical-session-handoff-redeem-response-v1`](../schemas/onboarding/physical-session-handoff-redeem-response-v1.schema.json) | Pending, rejected, or one-time redeemed bundle                     |
 
 ## WebSocket schemas
 

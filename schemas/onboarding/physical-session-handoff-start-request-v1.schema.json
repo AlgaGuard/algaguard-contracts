@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:onboarding:physical-session-handoff-start-request:v1",
+  "title": "Development-only physical session handoff start request v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "protocolVersion": { "const": 1 },
+    "deviceId": {
+      "$ref": "urn:algaguard:schema:common:device-reference:v1#/$defs/deviceId"
+    }
+  },
+  "required": ["protocolVersion", "deviceId"]
+}

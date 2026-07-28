@@ -24,6 +24,25 @@ The device reports bounded progress through [`ble-provisioning-result-v1`](../sc
 
 These contracts permit fake-adapter and host validation. They do not prove BLE link protection, radio interoperability, QR camera behavior, Wi-Fi association, or physical ESP32 success; those require separate hardware evidence.
 
+## Development-only physical session handoff
+
+The physical-session handoff is development-only and is rejected at startup in
+production or release deployments. A local utility starts a bounded handoff
+using [`physical-session-handoff-start-request-v1`](../schemas/onboarding/physical-session-handoff-start-request-v1.schema.json).
+It receives a high-entropy `deviceCode`, a short `userCode`, expiry, and a
+minimum polling interval. The `userCode` is only an approval correlation value;
+it cannot redeem a session.
+
+An authenticated mobile client approves the code with an active bootstrap
+session using [`physical-session-handoff-approve-request-v1`](../schemas/onboarding/physical-session-handoff-approve-request-v1.schema.json).
+The service validates the session hash, device binding, organization ownership,
+and ownership version. It stores the approved bundle only as AEAD ciphertext in
+Redis with a TTL no later than the session expiry. Redemption uses the device
+code in a POST body, returns the bundle once, and rejects expiry and replay.
+Codes, session tokens, encrypted bundles, and approval/redeem bodies are never
+put in URLs, logs, traces, metrics, database rows, or plaintext Redis values.
+No physical provisioning occurs under this contract.
+
 ## Compatibility
 
 All four schemas are new v1 documents. No existing required field, type, enum, topic, API path, subscription rule, or protocol meaning changes. The addition is compatible for existing producers and consumers because they do not receive these messages unless they implement the new onboarding flow.

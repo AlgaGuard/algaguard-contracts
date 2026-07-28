@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:onboarding:physical-session-handoff-start-response:v1",
+  "title": "Development-only physical session handoff start response v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "handoffId": { "type": "string", "format": "uuid" },
+    "deviceCode": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{43,128}$",
+      "description": "High-entropy one-time device proof. Never log or place in a URL."
+    },
+    "userCode": {
+      "type": "string",
+      "pattern": "^[A-HJ-NP-Z2-9]{6,16}$",
+      "description": "Short approval correlation code. It cannot redeem a session."
+    },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "pollIntervalSeconds": { "type": "integer", "minimum": 1, "maximum": 60 }
+  },
+  "required": ["handoffId", "deviceCode", "userCode", "expiresAt", "pollIntervalSeconds"]
+}
