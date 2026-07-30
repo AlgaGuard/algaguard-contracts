@@ -89,6 +89,38 @@ paths:
                 $ref: '#/components/schemas/Device'
         default:
           $ref: './common-components-v1.yaml#/components/responses/Problem'
+  /api/v1/devices/{deviceUuid}/bootstrap-sessions/reissue:
+    parameters:
+      - name: deviceUuid
+        in: path
+        required: true
+        description: Internal immutable UUID of an already-owned device.
+        schema:
+          $ref: './common-components-v1.yaml#/components/schemas/Uuid'
+      - $ref: './common-components-v1.yaml#/components/parameters/CorrelationId'
+    post:
+      tags: [Devices]
+      operationId: reissueOwnedDeviceBootstrapSession
+      summary: Reissue one bootstrap session for an already-owned claimed device.
+      description: Development/demo-only owner-authorized recovery operation. It neither creates nor claims a device and does not change ownership or ownershipVersion. A second request while a session is active is rejected.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OwnedDeviceBootstrapReissueRequest'
+      responses:
+        '201':
+          description: A new short-lived bootstrap session returned exactly once.
+          headers:
+            Cache-Control:
+              schema: { const: no-store }
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BootstrapSession'
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
   /api/v1/development/physical-session-handoffs/start:
     post:
       tags: [Devices]
@@ -241,6 +273,43 @@ components:
       schema:
         $ref: './common-components-v1.yaml#/components/schemas/DeviceId'
   schemas:
+    OwnedDeviceBootstrapReissueRequest:
+      description: Conforms to urn:algaguard:schema:onboarding:owned-device-bootstrap-reissue-request:v1.
+      x-contract-schema: schemas/onboarding/owned-device-bootstrap-reissue-request-v1.schema.json
+      type: object
+      additionalProperties: false
+      properties:
+        schema:
+          const: urn:algaguard:schema:onboarding:owned-device-bootstrap-reissue-request:v1
+        schemaVersion: { const: 1.0.0 }
+        ownershipVersion: { type: string, pattern: '^[1-9][0-9]{0,18}$' }
+        expiresInSeconds: { type: integer, minimum: 60, maximum: 600 }
+      required: [schema, schemaVersion, ownershipVersion, expiresInSeconds]
+    BootstrapSession:
+      description: Conforms to urn:algaguard:schema:onboarding:bootstrap-session:v1 and contains the sessionToken only in this one-time response.
+      x-contract-schema: schemas/onboarding/bootstrap-session-v1.schema.json
+      type: object
+      additionalProperties: false
+      properties:
+        schema: { const: urn:algaguard:schema:onboarding:bootstrap-session:v1 }
+        schemaVersion: { const: 1.0.0 }
+        sessionId: { type: string, format: uuid }
+        deviceId: { type: string, pattern: '^AG-[0-9]{6}$' }
+        createdAt: { type: string, format: date-time }
+        expiresAt: { type: string, format: date-time }
+        serviceUuid: { type: string, format: uuid }
+        sessionToken: { type: string, pattern: '^[A-Za-z0-9_-]{32,96}$' }
+      required:
+        [
+          schema,
+          schemaVersion,
+          sessionId,
+          deviceId,
+          createdAt,
+          expiresAt,
+          serviceUuid,
+          sessionToken,
+        ]
     PhysicalSessionHandoffStartRequest:
       type: object
       additionalProperties: false

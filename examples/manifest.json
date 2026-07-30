@@ -6,6 +6,7 @@
     "websocket-telemetry-updated-v1-1.json": "urn:algaguard:schema:websocket:telemetry-updated:v1-1",
     "claim-qr-v1.json": "urn:algaguard:schema:onboarding:claim-qr:v1",
     "bootstrap-session-v1.json": "urn:algaguard:schema:onboarding:bootstrap-session:v1",
+    "owned-device-bootstrap-reissue-request-v1.json": "urn:algaguard:schema:onboarding:owned-device-bootstrap-reissue-request:v1",
     "bootstrap-token-exchange-request-v1.json": "urn:algaguard:schema:onboarding:bootstrap-token-exchange-request:v1",
     "bootstrap-token-exchange-response-v1.json": "urn:algaguard:schema:onboarding:bootstrap-token-exchange-response:v1",
     "bootstrap-authorization-v1.json": "urn:algaguard:schema:onboarding:bootstrap-authorization:v1",

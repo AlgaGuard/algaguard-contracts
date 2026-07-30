@@ -12,8 +12,8 @@ test('schema filenames support major and additive minor document versions', () =
 const schemas = loadSchemas();
 const ajv = createAjv();
 
-test('the repository contains the 54 planned versioned schemas', () => {
-  assert.equal(schemas.length, 54);
+test('the repository contains the 55 planned versioned schemas', () => {
+  assert.equal(schemas.length, 55);
 });
 
 for (const { relative, schema } of schemas) {

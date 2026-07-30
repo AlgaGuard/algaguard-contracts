@@ -1,0 +1,6 @@
+{
+  "schema": "urn:algaguard:schema:onboarding:owned-device-bootstrap-reissue-request:v1",
+  "schemaVersion": "1.0.0",
+  "ownershipVersion": "1",
+  "expiresInSeconds": 300
+}

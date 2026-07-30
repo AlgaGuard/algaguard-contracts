@@ -43,6 +43,21 @@ Codes, session tokens, encrypted bundles, and approval/redeem bodies are never
 put in URLs, logs, traces, metrics, database rows, or plaintext Redis values.
 No physical provisioning occurs under this contract.
 
+## Owned-device bootstrap reissue
+
+The additive
+[`owned-device-bootstrap-reissue-request-v1`](../schemas/onboarding/owned-device-bootstrap-reissue-request-v1.schema.json)
+supports a bounded development/demo recovery for an already-owned `CLAIMED`
+device. The authenticated current owner supplies the current ownership version
+in the HTTPS body. Success returns the existing `bootstrap-session-v1` shape
+exactly once with `Cache-Control: no-store`; only the token hash is retained.
+The operation neither creates a claim/device/ownership row nor changes owner,
+ownership version, or lifecycle. Active-session duplication, cross-organization
+access, stale ownership, and ineligible lifecycle states fail closed.
+
 ## Compatibility
 
-All four schemas are new v1 documents. No existing required field, type, enum, topic, API path, subscription rule, or protocol meaning changes. The addition is compatible for existing producers and consumers because they do not receive these messages unless they implement the new onboarding flow.
+All onboarding additions are new v1 documents. No existing required field,
+type, enum, topic, API path, subscription rule, or protocol meaning changes.
+The additions are compatible for existing producers and consumers because they
+do not receive these messages unless they implement the new onboarding flow.

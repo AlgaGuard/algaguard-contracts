@@ -6,6 +6,7 @@ All notable contract changes are recorded here. Dates use ISO 8601.
 
 ### Added
 
+- 2026-07-30: Additive owner-authorized, no-store bootstrap-session reissue contract for development/demo recovery without device or ownership mutation.
 - 2026-07-24: Compatible device bootstrap, CSR issuance, credential metadata/status, rotation, revocation, and health schemas with validated examples.
 - 2026-07-24: Separate device credential OpenAPI and credential rotation AsyncAPI without changing released documents.
 - 2026-07-23: Additive dual device identity, trusted internal context, post-commit telemetry, and WebSocket v1.1 telemetry contracts with migration guidance and cross-service fixtures.
