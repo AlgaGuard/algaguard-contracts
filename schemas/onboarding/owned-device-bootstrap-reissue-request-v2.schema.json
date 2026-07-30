@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:onboarding:owned-device-bootstrap-reissue-request:v2",
+  "title": "Owner-authorized device bootstrap reissue request v2",
+  "description": "Development/demo-only request for a server-timed bootstrap session for an already-owned claimed device without changing device identity or ownership.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "urn:algaguard:schema:onboarding:owned-device-bootstrap-reissue-request:v2"
+    },
+    "schemaVersion": { "const": "2.0.0" },
+    "ownershipVersion": {
+      "type": "string",
+      "pattern": "^[1-9][0-9]{0,18}$"
+    }
+  },
+  "required": ["schema", "schemaVersion", "ownershipVersion"]
+}

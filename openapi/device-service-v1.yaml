@@ -108,7 +108,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OwnedDeviceBootstrapReissueRequest'
+              oneOf:
+                - $ref: '#/components/schemas/OwnedDeviceBootstrapReissueRequest'
+                - $ref: '#/components/schemas/OwnedDeviceBootstrapReissueRequestV2'
       responses:
         '201':
           description: A new short-lived bootstrap session returned exactly once.
@@ -285,6 +287,17 @@ components:
         ownershipVersion: { type: string, pattern: '^[1-9][0-9]{0,18}$' }
         expiresInSeconds: { type: integer, minimum: 60, maximum: 600 }
       required: [schema, schemaVersion, ownershipVersion, expiresInSeconds]
+    OwnedDeviceBootstrapReissueRequestV2:
+      description: Conforms to urn:algaguard:schema:onboarding:owned-device-bootstrap-reissue-request:v2. The server development policy is the authoritative lifetime source.
+      x-contract-schema: schemas/onboarding/owned-device-bootstrap-reissue-request-v2.schema.json
+      type: object
+      additionalProperties: false
+      properties:
+        schema:
+          const: urn:algaguard:schema:onboarding:owned-device-bootstrap-reissue-request:v2
+        schemaVersion: { const: 2.0.0 }
+        ownershipVersion: { type: string, pattern: '^[1-9][0-9]{0,18}$' }
+      required: [schema, schemaVersion, ownershipVersion]
     BootstrapSession:
       description: Conforms to urn:algaguard:schema:onboarding:bootstrap-session:v1 and contains the sessionToken only in this one-time response.
       x-contract-schema: schemas/onboarding/bootstrap-session-v1.schema.json

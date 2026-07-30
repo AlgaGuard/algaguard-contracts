@@ -47,6 +47,10 @@ No physical provisioning occurs under this contract.
 
 The additive
 [`owned-device-bootstrap-reissue-request-v1`](../schemas/onboarding/owned-device-bootstrap-reissue-request-v1.schema.json)
+is retained for compatibility. Development physical onboarding uses
+[`owned-device-bootstrap-reissue-request-v2`](../schemas/onboarding/owned-device-bootstrap-reissue-request-v2.schema.json),
+which omits a client-selected lifetime: the server-returned `expiresAt` is the
+authoritative expiry.
 supports a bounded development/demo recovery for an already-owned `CLAIMED`
 device. The authenticated current owner supplies the current ownership version
 in the HTTPS body. Success returns the existing `bootstrap-session-v1` shape
