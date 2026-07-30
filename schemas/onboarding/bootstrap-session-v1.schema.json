@@ -28,7 +28,9 @@
     },
     "serviceUuid": {
       "type": "string",
-      "format": "uuid"
+      "format": "uuid",
+      "const": "0000a1a0-0000-1000-8000-00805f9b34fb",
+      "description": "Canonical AlgaGuard BLE provisioning service UUID."
     },
     "sessionToken": {
       "type": "string",

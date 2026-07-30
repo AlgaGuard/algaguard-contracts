@@ -4,6 +4,8 @@ All notable contract changes are recorded here. Dates use ISO 8601.
 
 ## Unreleased
 
+- 2026-07-30: Constrain bootstrap-session responses to the canonical AlgaGuard BLE provisioning service UUID and add cross-consumer drift checks.
+
 ### Added
 
 - 2026-07-30: Additive owner-authorized, no-store bootstrap-session reissue contract for development/demo recovery without device or ownership mutation.

@@ -297,7 +297,10 @@ components:
         deviceId: { type: string, pattern: '^AG-[0-9]{6}$' }
         createdAt: { type: string, format: date-time }
         expiresAt: { type: string, format: date-time }
-        serviceUuid: { type: string, format: uuid }
+        serviceUuid:
+          type: string
+          format: uuid
+          const: 0000a1a0-0000-1000-8000-00805f9b34fb
         sessionToken: { type: string, pattern: '^[A-Za-z0-9_-]{32,96}$' }
       required:
         [
