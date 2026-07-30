@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:onboarding:qr-onboarding-exchange-request:v1",
+  "title": "Authenticated QR onboarding exchange request v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "urn:algaguard:schema:onboarding:qr-onboarding-exchange-request:v1"
+    },
+    "schemaVersion": { "const": "1.0.0" },
+    "invitationUri": {
+      "type": "string",
+      "minLength": 49,
+      "maxLength": 49,
+      "pattern": "^ag://q/[A-Za-z0-9_-]{42}$"
+    },
+    "ownershipVersion": {
+      "type": "string",
+      "pattern": "^[1-9][0-9]{0,18}$"
+    }
+  },
+  "required": ["schema", "schemaVersion", "invitationUri", "ownershipVersion"]
+}

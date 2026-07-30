@@ -18,6 +18,16 @@ The scanner rejects unknown versions, malformed identifiers, and expired payload
 
 After an authenticated and authorized HTTPS claim, the Device Service may issue a short-lived [`bootstrap-session-v1`](../schemas/onboarding/bootstrap-session-v1.schema.json). The session is bound to one device, expires, is consumed at most once, and uses the schema-constrained canonical AlgaGuard BLE provisioning service UUID. `sessionToken` is ephemeral session proof, not a permanent device credential, and receives the same redaction treatment as the claim secret.
 
+The development QR-assisted path uses a separate public invitation. Its URI is exactly
+`ag://q/` followed by 42 unpadded base64url characters encoding 31 bytes: version
+(1), numeric device reference (3), 128-bit nonce (16), issued and expiry epoch
+seconds (4 each), capability (1), and CRC-16 (2). The QR is not ownership
+authority. An authenticated exchange validates current ownership and returns a
+one-time session plus a signed binding grant. BLE request v2 carries that grant so
+firmware can verify the displayed nonce, device, session, token digest, capability,
+and expiry before accepting Wi-Fi credentials. The former user-code handoff remains
+disabled by default and is not part of this path.
+
 The mobile client scans only the expected service UUID, connects, and sends [`ble-provisioning-request-v1`](../schemas/onboarding/ble-provisioning-request-v1.schema.json) through the protected provisioning session. SSID and password do not appear in QR or HTTPS query strings. Both peers keep the password only for the active attempt and clear its buffers on success, failure, cancellation, timeout, or disconnect. Implementations must apply a UTF-8 byte limit of 32 bytes to SSID values in addition to schema validation.
 
 The device reports bounded progress through [`ble-provisioning-result-v1`](../schemas/onboarding/ble-provisioning-result-v1.schema.json). A `FAILED` result includes a machine-readable `errorCode` but never echoes the SSID, password, session token, or claim secret.

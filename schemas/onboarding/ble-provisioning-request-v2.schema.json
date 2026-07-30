@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:onboarding:ble-provisioning-request:v2",
+  "title": "QR-bound BLE Wi-Fi provisioning request v2",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "urn:algaguard:schema:onboarding:ble-provisioning-request:v2"
+    },
+    "schemaVersion": { "const": "2.0.0" },
+    "sessionId": { "type": "string", "format": "uuid" },
+    "deviceId": {
+      "$ref": "urn:algaguard:schema:common:device-reference:v1#/$defs/deviceId"
+    },
+    "sessionToken": { "type": "string", "pattern": "^[A-Za-z0-9_-]{32,96}$" },
+    "bindingGrant": { "type": "string", "pattern": "^[A-Za-z0-9_-]{194}$" },
+    "ssid": { "type": "string", "minLength": 1, "maxLength": 32 },
+    "password": { "type": "string", "minLength": 8, "maxLength": 64 }
+  },
+  "required": [
+    "schema",
+    "schemaVersion",
+    "sessionId",
+    "deviceId",
+    "sessionToken",
+    "bindingGrant",
+    "ssid",
+    "password"
+  ]
+}

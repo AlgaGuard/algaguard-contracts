@@ -36,8 +36,12 @@ All schemas use JSON Schema Draft 2020-12 and stable URN identifiers. Files endi
 | Contract                                                                                                                       | Direction and purpose                                              |
 | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------ |
 | [`claim-qr-v1`](../schemas/onboarding/claim-qr-v1.schema.json)                                                                 | Compact OLED QR and manual fallback claim material                 |
+| [`qr-onboarding-invitation-v1`](../schemas/onboarding/qr-onboarding-invitation-v1.schema.json)                                 | Public compact QR invitation decoded from `ag://q/`                |
+| [`qr-onboarding-exchange-request-v1`](../schemas/onboarding/qr-onboarding-exchange-request-v1.schema.json)                     | Authenticated one-time QR exchange                                 |
+| [`qr-onboarding-exchange-response-v1`](../schemas/onboarding/qr-onboarding-exchange-response-v1.schema.json)                   | QR-bound BLE session and signed device grant                       |
 | [`bootstrap-session-v1`](../schemas/onboarding/bootstrap-session-v1.schema.json)                                               | HTTPS-issued short-lived, one-device BLE bootstrap session         |
 | [`ble-provisioning-request-v1`](../schemas/onboarding/ble-provisioning-request-v1.schema.json)                                 | Protected-session Wi-Fi provisioning request from mobile to device |
+| [`ble-provisioning-request-v2`](../schemas/onboarding/ble-provisioning-request-v2.schema.json)                                 | Signed QR-bound Wi-Fi provisioning request                         |
 | [`ble-provisioning-result-v1`](../schemas/onboarding/ble-provisioning-result-v1.schema.json)                                   | Credential-free provisioning progress from device to mobile        |
 | [`physical-session-handoff-start-request-v1`](../schemas/onboarding/physical-session-handoff-start-request-v1.schema.json)     | Development-only local handoff start binding                       |
 | [`physical-session-handoff-start-response-v1`](../schemas/onboarding/physical-session-handoff-start-response-v1.schema.json)   | One-time device and user approval codes                            |

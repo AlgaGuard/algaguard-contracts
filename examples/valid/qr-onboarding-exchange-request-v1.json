@@ -1,0 +1,6 @@
+{
+  "schema": "urn:algaguard:schema:onboarding:qr-onboarding-exchange-request:v1",
+  "schemaVersion": "1.0.0",
+  "invitationUri": "ag://q/AQAAAQABAgMEBQYHCAkKCwwNDg9w3YUAcN2WLAGrzQ",
+  "ownershipVersion": "1"
+}

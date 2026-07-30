@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:onboarding:qr-onboarding-invitation:v1",
+  "title": "Decoded compact QR onboarding invitation v1",
+  "description": "Public, short-lived invitation decoded from the ag://q/ compact binary transport. It contains no authority or secret material.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "version": { "const": 1 },
+    "deviceId": {
+      "$ref": "urn:algaguard:schema:common:device-reference:v1#/$defs/deviceId"
+    },
+    "nonce": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{22}$",
+      "description": "Exactly 128 public random bits, unpadded base64url encoded."
+    },
+    "issuedAt": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 4294967295,
+      "description": "ESP32 monotonic boot seconds at invitation generation; not a wall-clock timestamp."
+    },
+    "expiresAt": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 4294967295,
+      "description": "ESP32 monotonic boot seconds at expiry; expiresAt-issuedAt is at most 300 seconds."
+    },
+    "capabilityVersion": { "const": 1 },
+    "checksum": { "type": "integer", "minimum": 0, "maximum": 65535 }
+  },
+  "required": [
+    "version",
+    "deviceId",
+    "nonce",
+    "issuedAt",
+    "expiresAt",
+    "capabilityVersion",
+    "checksum"
+  ]
+}

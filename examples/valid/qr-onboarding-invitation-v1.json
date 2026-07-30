@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "deviceId": "AG-000001",
+  "nonce": "AAECAwQFBgcICQoLDA0ODw",
+  "issuedAt": 1893456000,
+  "expiresAt": 1893456300,
+  "capabilityVersion": 1,
+  "checksum": 43981
+}

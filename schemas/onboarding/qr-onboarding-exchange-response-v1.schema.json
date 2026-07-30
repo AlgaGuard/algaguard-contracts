@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:onboarding:qr-onboarding-exchange-response:v1",
+  "title": "One-time QR onboarding session response v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "urn:algaguard:schema:onboarding:qr-onboarding-exchange-response:v1"
+    },
+    "schemaVersion": { "const": "1.0.0" },
+    "sessionId": { "type": "string", "format": "uuid" },
+    "deviceId": {
+      "$ref": "urn:algaguard:schema:common:device-reference:v1#/$defs/deviceId"
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "serviceUuid": {
+      "type": "string",
+      "const": "0000a1a0-0000-1000-8000-00805f9b34fb",
+      "format": "uuid"
+    },
+    "sessionToken": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{32,96}$"
+    },
+    "bindingGrant": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{194}$",
+      "description": "Development-backend signed public binding consumed by firmware; it contains no private key or Wi-Fi material."
+    }
+  },
+  "required": [
+    "schema",
+    "schemaVersion",
+    "sessionId",
+    "deviceId",
+    "createdAt",
+    "expiresAt",
+    "serviceUuid",
+    "sessionToken",
+    "bindingGrant"
+  ]
+}

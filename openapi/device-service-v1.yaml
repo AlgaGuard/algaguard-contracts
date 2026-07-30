@@ -123,6 +123,30 @@ paths:
                 $ref: '#/components/schemas/BootstrapSession'
         default:
           $ref: './common-components-v1.yaml#/components/responses/Problem'
+  /api/v1/device-onboarding/qr/exchange:
+    post:
+      tags: [Devices]
+      operationId: exchangeQrOnboardingInvitation
+      summary: Exchange one public QR invitation for a QR-bound BLE session.
+      description: Development-only and disabled by default. The authenticated owner is authoritative; the invitation contains no ownership authority or secret.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QrOnboardingExchangeRequest'
+      responses:
+        '201':
+          description: One-time QR-bound onboarding session.
+          headers:
+            Cache-Control:
+              schema: { const: no-store }
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QrOnboardingExchangeResponse'
+        default:
+          $ref: './common-components-v1.yaml#/components/responses/Problem'
   /api/v1/development/physical-session-handoffs/start:
     post:
       tags: [Devices]
@@ -275,6 +299,42 @@ components:
       schema:
         $ref: './common-components-v1.yaml#/components/schemas/DeviceId'
   schemas:
+    QrOnboardingExchangeRequest:
+      x-contract-schema: schemas/onboarding/qr-onboarding-exchange-request-v1.schema.json
+      type: object
+      additionalProperties: false
+      properties:
+        schema: { const: urn:algaguard:schema:onboarding:qr-onboarding-exchange-request:v1 }
+        schemaVersion: { const: 1.0.0 }
+        invitationUri: { type: string, pattern: '^ag://q/[A-Za-z0-9_-]{42}$' }
+        ownershipVersion: { type: string, pattern: '^[1-9][0-9]{0,18}$' }
+      required: [schema, schemaVersion, invitationUri, ownershipVersion]
+    QrOnboardingExchangeResponse:
+      x-contract-schema: schemas/onboarding/qr-onboarding-exchange-response-v1.schema.json
+      type: object
+      additionalProperties: false
+      properties:
+        schema: { const: urn:algaguard:schema:onboarding:qr-onboarding-exchange-response:v1 }
+        schemaVersion: { const: 1.0.0 }
+        sessionId: { type: string, format: uuid }
+        deviceId: { type: string, pattern: '^AG-[0-9]{6}$' }
+        createdAt: { type: string, format: date-time }
+        expiresAt: { type: string, format: date-time }
+        serviceUuid: { const: 0000a1a0-0000-1000-8000-00805f9b34fb, format: uuid }
+        sessionToken: { type: string, pattern: '^[A-Za-z0-9_-]{32,96}$' }
+        bindingGrant: { type: string, pattern: '^[A-Za-z0-9_-]{160,256}$' }
+      required:
+        [
+          schema,
+          schemaVersion,
+          sessionId,
+          deviceId,
+          createdAt,
+          expiresAt,
+          serviceUuid,
+          sessionToken,
+          bindingGrant,
+        ]
     OwnedDeviceBootstrapReissueRequest:
       description: Conforms to urn:algaguard:schema:onboarding:owned-device-bootstrap-reissue-request:v1.
       x-contract-schema: schemas/onboarding/owned-device-bootstrap-reissue-request-v1.schema.json
