@@ -4,6 +4,7 @@ All notable contract changes are recorded here. Dates use ISO 8601.
 
 ## Unreleased
 
+- 2026-08-02: Add a development-only scan-first QR exchange request that binds a provisional device to an authenticated organization; the existing owned-device request remains unchanged.
 - 2026-07-30: Constrain bootstrap-session responses to the canonical AlgaGuard BLE provisioning service UUID and add cross-consumer drift checks.
 
 ### Added

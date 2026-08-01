@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:onboarding:qr-onboarding-exchange-request:v2",
+  "title": "Authenticated development scan-first QR onboarding exchange request v2",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "urn:algaguard:schema:onboarding:qr-onboarding-exchange-request:v2"
+    },
+    "schemaVersion": { "const": "2.0.0" },
+    "invitationUri": {
+      "type": "string",
+      "minLength": 49,
+      "maxLength": 49,
+      "pattern": "^ag://q/[A-Za-z0-9_-]{42}$"
+    },
+    "organizationId": { "type": "string", "format": "uuid" },
+    "registrationMode": { "const": "DEVELOPMENT_SCAN_FIRST" }
+  },
+  "required": ["schema", "schemaVersion", "invitationUri", "organizationId", "registrationMode"]
+}

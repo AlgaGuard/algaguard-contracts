@@ -134,7 +134,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/QrOnboardingExchangeRequest'
+              oneOf:
+                - $ref: '#/components/schemas/QrOnboardingExchangeRequest'
+                - $ref: '#/components/schemas/QrOnboardingExchangeRequestV2'
       responses:
         '201':
           description: One-time QR-bound onboarding session.
@@ -335,6 +337,18 @@ components:
           sessionToken,
           bindingGrant,
         ]
+    QrOnboardingExchangeRequestV2:
+      description: Development-only scan-first exchange. The QR is public and creates only a provisional CLAIMED binding; credential bootstrap remains authoritative for activation.
+      x-contract-schema: schemas/onboarding/qr-onboarding-exchange-request-v2.schema.json
+      type: object
+      additionalProperties: false
+      properties:
+        schema: { const: urn:algaguard:schema:onboarding:qr-onboarding-exchange-request:v2 }
+        schemaVersion: { const: 2.0.0 }
+        invitationUri: { type: string, pattern: '^ag://q/[A-Za-z0-9_-]{42}$' }
+        organizationId: { type: string, format: uuid }
+        registrationMode: { const: DEVELOPMENT_SCAN_FIRST }
+      required: [schema, schemaVersion, invitationUri, organizationId, registrationMode]
     OwnedDeviceBootstrapReissueRequest:
       description: Conforms to urn:algaguard:schema:onboarding:owned-device-bootstrap-reissue-request:v1.
       x-contract-schema: schemas/onboarding/owned-device-bootstrap-reissue-request-v1.schema.json

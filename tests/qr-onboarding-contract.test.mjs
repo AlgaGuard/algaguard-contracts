@@ -5,6 +5,9 @@ import { createAjv } from '../scripts/lib/contract-tools.mjs';
 const ajv = createAjv();
 const invitation = ajv.getSchema('urn:algaguard:schema:onboarding:qr-onboarding-invitation:v1');
 const exchange = ajv.getSchema('urn:algaguard:schema:onboarding:qr-onboarding-exchange-request:v1');
+const scanFirstExchange = ajv.getSchema(
+  'urn:algaguard:schema:onboarding:qr-onboarding-exchange-request:v2',
+);
 const bleV2 = ajv.getSchema('urn:algaguard:schema:onboarding:ble-provisioning-request:v2');
 
 test('compact public invitation has exact bounded fields', () => {
@@ -33,6 +36,19 @@ test('exchange accepts only the compact ag scheme and no redirect', () => {
   assert.equal(exchange(value), true);
   assert.equal(exchange({ ...value, invitationUri: 'https://example.invalid/' }), false);
   assert.equal(exchange({ ...value, redirectUri: 'https://example.invalid/' }), false);
+});
+
+test('scan-first exchange requires an authenticated organization binding and exact mode', () => {
+  const value = {
+    schema: 'urn:algaguard:schema:onboarding:qr-onboarding-exchange-request:v2',
+    schemaVersion: '2.0.0',
+    invitationUri: 'ag://q/' + 'A'.repeat(42),
+    organizationId: '10000000-0000-4000-8000-000000000001',
+    registrationMode: 'DEVELOPMENT_SCAN_FIRST',
+  };
+  assert.equal(scanFirstExchange(value), true);
+  assert.equal(scanFirstExchange({ ...value, ownershipVersion: '1' }), false);
+  assert.equal(scanFirstExchange({ ...value, registrationMode: 'UNSAFE' }), false);
 });
 
 test('BLE v2 requires a signed binding grant and rejects arbitrary fields', () => {
