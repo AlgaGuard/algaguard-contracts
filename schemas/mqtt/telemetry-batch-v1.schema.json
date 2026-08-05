@@ -70,7 +70,6 @@
             "firstSequence",
             "lastSequence",
             "sampleCount",
-            "activeProfile",
             "samples"
           ]
         }
