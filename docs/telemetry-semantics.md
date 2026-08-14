@@ -13,4 +13,4 @@ For every batch:
 - `activeProfile` identifies the immutable profile version used on the device;
 - `isReplay` and `createdFromSd` describe recovery without changing data meaning.
 
-JSON has no representation for NaN or Infinity, and producers must not encode them as strings. A missing sensor value is omitted and accompanied by `SENSOR_UNAVAILABLE`; it is not replaced by zero. Simulation data includes `SIMULATED` and a bounded `simulationScenario`.
+JSON has no representation for NaN or Infinity, and producers must not encode them as strings. A missing sensor value is omitted and accompanied by `SENSOR_UNAVAILABLE`; it is not replaced by zero. Simulation data includes `SIMULATED` and a bounded `simulationScenario`. A sample from real sensors is flagged `REAL` when every reading used is fresh, or `DEGRADED` when at least one field fell back to its last-known-good value for that tick.
