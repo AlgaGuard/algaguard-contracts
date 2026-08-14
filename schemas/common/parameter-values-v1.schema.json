@@ -19,17 +19,10 @@
       "type": "number",
       "minimum": 0
     },
-    "nitrateMgL": {
+    "nutrientPercent": {
       "type": "number",
-      "minimum": 0
-    },
-    "phosphateMgL": {
-      "type": "number",
-      "minimum": 0
-    },
-    "potassiumMgL": {
-      "type": "number",
-      "minimum": 0
+      "minimum": 0,
+      "maximum": 100
     },
     "batteryPercent": {
       "type": "number",

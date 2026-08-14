@@ -23,17 +23,9 @@
         "enabled": false,
         "unit": "LUX"
       },
-      "nitrateMgL": {
+      "nutrientPercent": {
         "enabled": false,
-        "unit": "MG_L"
-      },
-      "phosphateMgL": {
-        "enabled": false,
-        "unit": "MG_L"
-      },
-      "potassiumMgL": {
-        "enabled": false,
-        "unit": "MG_L"
+        "unit": "PERCENT"
       }
     },
     "configurationHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",

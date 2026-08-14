@@ -23,9 +23,7 @@
           "temperatureC": 24.1,
           "ph": 7.2,
           "lightLux": 800,
-          "nitrateMgL": 1.2,
-          "phosphateMgL": 0.2,
-          "potassiumMgL": 2.1,
+          "nutrientPercent": 63.4,
           "batteryPercent": 82,
           "batteryVoltageV": 11.8
         },

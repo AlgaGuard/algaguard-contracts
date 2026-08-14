@@ -118,7 +118,7 @@
                     }
                   ]
                 },
-                "nitrateMgL": {
+                "nutrientPercent": {
                   "allOf": [
                     {
                       "$ref": "#/$defs/parameter"
@@ -127,51 +127,14 @@
                       "type": "object",
                       "properties": {
                         "unit": {
-                          "const": "MG_L"
-                        }
-                      }
-                    }
-                  ]
-                },
-                "phosphateMgL": {
-                  "allOf": [
-                    {
-                      "$ref": "#/$defs/parameter"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "unit": {
-                          "const": "MG_L"
-                        }
-                      }
-                    }
-                  ]
-                },
-                "potassiumMgL": {
-                  "allOf": [
-                    {
-                      "$ref": "#/$defs/parameter"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "unit": {
-                          "const": "MG_L"
+                          "const": "PERCENT"
                         }
                       }
                     }
                   ]
                 }
               },
-              "required": [
-                "temperatureC",
-                "ph",
-                "lightLux",
-                "nitrateMgL",
-                "phosphateMgL",
-                "potassiumMgL"
-              ]
+              "required": ["temperatureC", "ph", "lightLux", "nutrientPercent"]
             },
             "configurationHash": {
               "type": "string",

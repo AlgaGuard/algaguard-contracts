@@ -11,9 +11,7 @@ const sample = {
     temperatureC: 24.1,
     ph: 7.1,
     lightLux: 900,
-    nitrateMgL: 2.4,
-    phosphateMgL: 0.35,
-    potassiumMgL: 1.8,
+    nutrientPercent: 63.4,
   },
   qualityFlags: ['SIMULATED'],
   simulationScenario: 'simulated-demo',
@@ -24,16 +22,14 @@ const sample = {
   },
 };
 
-test('the released telemetry contract carries all six demo parameters and explicit source metadata', () => {
+test('the released telemetry contract carries all four demo parameters and explicit source metadata', () => {
   const validate = createAjv().getSchema('urn:algaguard:schema:mqtt:telemetry-sample:v1');
   assert.ok(validate);
   assert.equal(validate(sample), true, JSON.stringify(validate.errors));
   assert.deepEqual(Object.keys(sample.values).sort(), [
     'lightLux',
-    'nitrateMgL',
+    'nutrientPercent',
     'ph',
-    'phosphateMgL',
-    'potassiumMgL',
     'temperatureC',
   ]);
   assert.equal(sample.extensions['algaguard.demo.source'], 'SIMULATED_DEMO');
