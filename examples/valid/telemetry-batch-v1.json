@@ -24,6 +24,9 @@
           "ph": 7.2,
           "lightLux": 800,
           "nutrientPercent": 63.4,
+          "nitrateMgL": 68.61,
+          "phosphateMgL": 9.81,
+          "potassiumMgL": 26.79,
           "batteryPercent": 82,
           "batteryVoltageV": 11.8
         },

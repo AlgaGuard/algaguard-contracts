@@ -24,6 +24,21 @@
       "minimum": 0,
       "maximum": 100
     },
+    "nitrateMgL": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Model estimate of nitrate from pH, computed on the device. Not a measurement."
+    },
+    "phosphateMgL": {
+      "type": "number",
+      "minimum": 0,
+      "description": "EXPERIMENTAL model estimate of phosphate from pH, computed on the device. Not a measurement."
+    },
+    "potassiumMgL": {
+      "type": "number",
+      "minimum": 0,
+      "description": "EXPERIMENTAL model estimate of potassium from temperature, computed on the device. Not a measurement."
+    },
     "batteryPercent": {
       "type": "number",
       "minimum": 0,
