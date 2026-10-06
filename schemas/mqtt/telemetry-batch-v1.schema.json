@@ -65,13 +65,7 @@
               "$ref": "urn:algaguard:schema:common:extension-map:v1"
             }
           },
-          "required": [
-            "batchId",
-            "firstSequence",
-            "lastSequence",
-            "sampleCount",
-            "samples"
-          ]
+          "required": ["batchId", "firstSequence", "lastSequence", "sampleCount", "samples"]
         }
       },
       "required": ["deviceId"]
