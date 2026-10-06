@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:algaguard:schema:mqtt:physical-unpair-command:v1",
+  "title": "Physically confirmed device unpair command v1",
+  "allOf": [
+    { "$ref": "urn:algaguard:schema:common:event-envelope:v1" },
+    {
+      "type": "object",
+      "properties": {
+        "schema": { "const": "urn:algaguard:schema:mqtt:physical-unpair-command:v1" },
+        "schemaVersion": { "const": "1.0.0" },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "commandId": { "type": "string", "format": "uuid" },
+            "commandType": { "const": "REQUEST_PHYSICAL_UNPAIR" },
+            "createdAt": { "type": "string", "format": "date-time" },
+            "expiresAt": { "type": "string", "format": "date-time" },
+            "issuedBy": { "type": "string", "minLength": 1, "maxLength": 128 },
+            "parameters": {
+              "type": "object",
+              "additionalProperties": false,
+              "maxProperties": 0
+            },
+            "correlationId": { "type": "string", "format": "uuid" }
+          },
+          "required": [
+            "commandId",
+            "commandType",
+            "createdAt",
+            "expiresAt",
+            "issuedBy",
+            "parameters"
+          ]
+        }
+      },
+      "required": ["deviceId"]
+    }
+  ]
+}
